@@ -207,42 +207,95 @@
 </section>
 
 
-    <!-- Testimonials Section -->
-    <section id="testimonials" class="testimonials section">
+<!-- Include Swiper CSS & JS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<!-- Testimonials Section -->
+<section id="testimonials" class="testimonials section">
     <h2 class="section-title">What Our Users Say</h2>
-    <div class="testimonial-slider">
-        <div class="testimonial-card">
-            <p class="testimonial-content">"Angler has transformed my study habits! The AI-generated notes and quizzes make learning so much easier."</p>
-            <div class="testimonial-author">
-                <div class="author-avatar">A</div>
-                <div>
-                    <p class="author-name">Alice Johnson</p>
-                    <p class="author-title">Student</p>
+    <div class="swiper testimonial-slider">
+        <div class="swiper-wrapper">
+            <!-- Duplicate last slide for seamless loop -->
+            <div class="testimonial-card swiper-slide">
+                <p class="testimonial-content">"I love how Angler generates flashcards and quizzes automatically. It has boosted my retention and test scores!"</p>
+                <div class="testimonial-author">
+                    <img src="https://th.bing.com/th/id/OIP.3uiIYTE_XvEjkFa6ExkL0gHaJ4?rs=1&pid=ImgDetMain" alt="Sarah" class="author-avatar">
+                    <div>
+                        <p class="author-name">Sarah Brown</p>
+                        <p class="author-title">Self-Learner</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Slides -->
+            <div class="testimonial-card swiper-slide">
+                <p class="testimonial-content">"Angler has transformed my study habits! The AI-generated notes and quizzes make learning so much easier."</p>
+                <div class="testimonial-author">
+                    <img src="https://via.placeholder.com/50" alt="Alice" class="author-avatar">
+                    <div>
+                        <p class="author-name">Alice Johnson</p>
+                        <p class="author-title">Student</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card swiper-slide">
+                <p class="testimonial-content">"A great tool for structured learning. The study plans and summarization features save so much time!"</p>
+                <div class="testimonial-author">
+                    <img src="https://via.placeholder.com/50" alt="Michael" class="author-avatar">
+                    <div>
+                        <p class="author-name">Michael Smith</p>
+                        <p class="author-title">Teacher</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card swiper-slide">
+                <p class="testimonial-content">"I love how Angler generates flashcards and quizzes automatically. It has boosted my retention and test scores!"</p>
+                <div class="testimonial-author">
+                    <img src="https://th.bing.com/th/id/OIP.3uiIYTE_XvEjkFa6ExkL0gHaJ4?rs=1&pid=ImgDetMain" alt="Sarah" class="author-avatar">
+                    <div>
+                        <p class="author-name">Sarah Brown</p>
+                        <p class="author-title">Self-Learner</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Duplicate first slide for seamless loop -->
+            <div class="testimonial-card swiper-slide">
+                <p class="testimonial-content">"Angler has transformed my study habits! The AI-generated notes and quizzes make learning so much easier."</p>
+                <div class="testimonial-author">
+                    <img src="https://via.placeholder.com/50" alt="Alice" class="author-avatar">
+                    <div>
+                        <p class="author-name">Alice Johnson</p>
+                        <p class="author-title">Student</p>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="testimonial-card">
-            <p class="testimonial-content">"A great tool for structured learning. The study plans and summarization features save so much time!"</p>
-            <div class="testimonial-author">
-                <div class="author-avatar">M</div>
-                <div>
-                    <p class="author-name">Michael Smith</p>
-                    <p class="author-title">Teacher</p>
-                </div>
-            </div>
-        </div>
-        <div class="testimonial-card">
-            <p class="testimonial-content">"I love how Angler generates flashcards and quizzes automatically. It has boosted my retention and test scores!"</p>
-            <div class="testimonial-author">
-                <div class="author-avatar">S</div>
-                <div>
-                    <p class="author-name">Sarah Brown</p>
-                    <p class="author-title">Self-Learner</p>
-                </div>
-            </div>
-        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
     </div>
 </section>
+
+<!-- Initialize Swiper -->
+<script>
+    var swiper = new Swiper(".testimonial-slider", {
+        loop: true,  
+        // autoplay: {
+        //     delay: 4000,
+        //     disableOnInteraction: true,
+        // },
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+        slidesPerView: 1,
+        spaceBetween: 20,  // Adds gap between cards
+    });
+</script>
+
 
 <!-- FAQ Section -->
 <section id="faq" class="faq section">

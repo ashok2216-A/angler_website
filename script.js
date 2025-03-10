@@ -19,3 +19,4 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('Current body class:', body.className);
   });
 });
+
