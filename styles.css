@@ -353,7 +353,7 @@ header {
 .step-number {
     position: absolute;
     top: 10px;
-    left: 10%;
+    left: 8%;
     transform: translateX(-50%);
     width: 30px;
     height: 30px;
