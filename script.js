@@ -1,23 +1,15 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const themeToggleBtn = document.querySelector('.theme-toggle');
-  const body = document.body;
+// Theme Toggle
+const themeToggle = document.getElementById('theme-toggle');
+const htmlElement = document.documentElement;
 
-  // Debugging: log initial state
-  console.log('Initial body class:', body.className);
-
-  themeToggleBtn.addEventListener('click', () => {
-    // Toggle between themes
-    if (body.classList.contains('light-theme')) {
-      body.classList.replace('light-theme', 'dark-theme');
-      themeToggleBtn.textContent = "Switch to Light Theme";
-      console.log('Switched to dark-theme');
+themeToggle.addEventListener('click', () => {
+    if (htmlElement.classList.contains('light-theme')) {
+        htmlElement.classList.remove('light-theme');
+        htmlElement.classList.add('dark-theme');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
     } else {
-      body.classList.replace('dark-theme', 'light-theme');
-      themeToggleBtn.textContent = "Switch to Dark Theme";
-      console.log('Switched to light-theme');
+        htmlElement.classList.remove('dark-theme');
+        htmlElement.classList.add('light-theme');
+        themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
     }
-    console.log('Current body class:', body.className);
-  });
 });
-
-
