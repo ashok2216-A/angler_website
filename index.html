@@ -16,7 +16,7 @@
     <header>
         <nav class="navbar">
             <a href="#" class="logo">
-                <img src="tvexz2qn.png" alt="Angler Logo" class="logo-img">
+                <img src="imgs/logo.png" alt="Angler Logo" class="logo-img">
                 Angler
             </a>
             <div class="nav-links">
@@ -29,8 +29,8 @@
             </div>
             <div class="nav-buttons">
                 
-                <a href="login.html" class="btn btn-primary">Start For Free</a>
-                <a href="learn-more.html" class="btn btn-secondary">Learn More</a>
+                <a href="pages/login.html" class="btn btn-primary">Start For Free</a>
+                <a href="pages/learnmore.html" class="btn btn-secondary">Learn More</a>
 
                 
                 <button class="hamburger">
@@ -47,8 +47,8 @@
             <h1 class="hero-title">Turn YouTube Videos into Smart Study Notes & Plans!</h1>
             <p class="hero-subtitle">Angler uses AI to transform educational YouTube content into comprehensive study materials. Generate notes, quizzes, and personalized study plans to boost your learning efficiency.</p>
             <div class="hero-buttons">
-                <a href="login.html" class="btn btn-primary">Start For Free</a>
-                <a href="learn-more.html" class="btn btn-secondary">Learn More</a>
+                <a href="pages/login.html" class="btn btn-primary">Start For Free</a>
+                <a href="pages/learnmore.html" class="btn btn-secondary">Learn More</a>
 
             </div>
         </div>
@@ -362,7 +362,7 @@
 
         <!-- About Image -->
         <div class="about-image">
-            <img src="img4.svg" alt="About Us">
+            <img src="imgs/aboutus.svg" alt="About Us">
         </div>
     </div>
 </section>
@@ -394,8 +394,8 @@
             </ul>
         </div>
 
-        <!-- Contact Form -->
-        <form action="#" class="contact-form">
+        <!-- Contact Form (Integrated with Formspree) -->
+        <form action="https://formspree.io/f/moveqgzn" method="POST" class="contact-form" enctype="multipart/form-data">
             <div class="form-group form-group-half">
                 <label for="name" class="form-label">Your Name</label>
                 <input type="text" id="name" name="name" class="form-input" required>
@@ -408,10 +408,15 @@
                 <label for="message" class="form-label">Your Message</label>
                 <textarea id="message" name="message" class="form-textarea" rows="5" required></textarea>
             </div>
+            <div class="form-group">
+                <label for="file" class="form-label">Upload File (Optional)</label>
+                <input type="file" id="file" name="upload" class="form-input">
+            </div>
             <button type="submit" class="btn btn-primary">Send Message</button>
         </form>
     </div>
 </section>
+
 
 
     <!-- Footer Section -->
@@ -420,7 +425,7 @@
         <!-- Footer Logo & About -->
         <div>
             <a href="#" class="logo">
-                <img src="tvexz2qn.png" alt="Angler Logo" class="logo-img">
+                <img src="imgs/logo.png" alt="Angler Logo" class="logo-img">
                 Angler
             </a>
             <p class="footer-about">
@@ -478,5 +483,4 @@
     <script src="scripts.js"></script>
 </body>
 </html>
-
 

@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learn More - FocusStudy</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="#" class="logo">
+                <img src="imgs/logo.png" alt="" class="logo-img">
+                Angler
+            </a>
+            <div class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#features">Features</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#about">About Us</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <!-- <div class="nav-buttons">
+                <a href="pages/login.html" class="btn btn-primary">Start For Free</a>
+                <a href="pages/learnmore.html" class="btn btn-secondary">Learn More</a>
+                <button class="hamburger">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div> -->
+            <button class="hamburger">
+              <i class="fas fa-bars"></i>
+          </button>
+        </nav>
+    </header>
+    <br><br></br></br>
+    <section>
+        <div class="container">
+          <h1>Revolutionize Your Learning Experience</h1>
+          <br>
+          <div class="banner">
+            <img src="https://amcredit.com/blog/content/images/2024/03/ai-business-strategies.jpg" alt="Banner Image">
+          </div>
+                
+                <p>FocusStudy transforms YouTube's vast educational content into a structured, distraction-free learning environment designed for self-taught learners.</p>
+                <!-- <a href="#signup" class="btn btn-primary">Get Started for Free</a>
+                <a href="#demo" class="btn btn-secondary">Watch Demo</a> -->
+              </div>
+            
+            
+        </div>
+    <style>
+        /* Modern CSS with Gradients */
+        :root {
+          --primary-gradient: linear-gradient(135deg, rgb(0, 159, 207) 1%, rgb(3, 3, 207) 30%, rgb(132, 0, 255) 100%);
+          --secondary-gradient: linear-gradient(130deg, rgb(0, 159, 207) 1%, rgb(3, 3, 207) 30%, rgb(132, 0, 255) 100%);
+          --accent-gradient: linear-gradient(130deg, rgb(0, 159, 207) 1%, rgb(3, 3, 207) 30%, rgb(132, 0, 255) 100%);
+          --dark-gradient: linear-gradient(135deg, #232930, #090c14);
+          --light-gradient: linear-gradient(135deg, #2e2e2e, #2e2e2e);
+          --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+        
+        body {
+          font-family: var(--font-family);
+          line-height: 1.6;
+          color: #111827;
+          background-color: #F9FAFB;
+          overflow-x: hidden;
+        }
+
+        .banner {
+            position: relative;
+            text-align: center;
+            color: white;
+          }
+
+          .banner img {
+            width: 100%;
+            height: auto;
+          }
+
+          .banner h1, .banner p {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+          }
+
+
+        .logo {
+              font-size: 24px;
+              font-weight: 700;
+              background: linear-gradient(90deg, rgb(0, 159, 207) 1%, rgb(3, 3, 207) 30%, rgb(132, 0, 255) 100%);
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: transparent;
+              display: flex;
+              align-items: center;
+              gap: 8px;
+          }
+
+          .logo i {
+              font-size: 28px;
+              background: linear-gradient(135deg, );
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: transparent;
+          }
+
+        .logo-img {
+            width: 45px; /* Adjust size as needed */
+            height: 45px; /* Ensure it's a perfect circle */
+            border-radius: 50%; /* Makes the image round */
+            object-fit: cover; /* Ensures the image fills the circular shape */
+            vertical-align: middle; /* Aligns with text */
+            margin-right: 8px; /* Space between logo and text */
+        }
+                /* Header & Navigation */
+        header {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            background-color: rgba(var(--bg), 0.8);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 24px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(90deg, rgb(0, 159, 207) 1%, rgb(3, 3, 207) 30%, rgb(132, 0, 255) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo i {
+            font-size: 28px;
+            background: linear-gradient(135deg, );
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+
+        .logo-img {
+            width: 45px; /* Adjust size as needed */
+            height: 45px; /* Ensure it's a perfect circle */
+            border-radius: 50%; /* Makes the image round */
+            object-fit: cover; /* Ensures the image fills the circular shape */
+            vertical-align: middle; /* Aligns with text */
+            margin-right: 8px; /* Space between logo and text */
+        }
+
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            font-weight: 500;
+            position: relative;
+        }
+
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        .container {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 0 20px;
+        }
+        
+        h1 {
+          font-size: 3rem;
+          margin-bottom: 1rem;
+          background: var(--light-gradient);
+          -webkit-background-clip: text;
+          background-clip: text;
+          color: transparent;
+          font-weight: 800;
+        }
+        
+        .subtitle {
+          font-size: 1.5rem;
+          margin-bottom: 2rem;
+          font-weight: 400;
+          opacity: 0.9;
+        }
+        
+        section {
+          margin-bottom: 0rem;
+          background: white;
+          border-radius: 16px;
+          padding: 2rem;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        section:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+        
+        h2 {
+          font-size: 2rem;
+          margin-bottom: 1.5rem;
+          position: relative;
+          padding-bottom: 0.5rem;
+          color: #4F46E5;
+        }
+        
+        h2::after {
+          content: '';
+          position: absolute;
+          left: 0;
+          bottom: 0;
+          height: 4px;
+          width: 60px;
+          background: var(--secondary-gradient);
+          border-radius: 2px;
+        }
+        
+        h3 {
+          font-size: 1.5rem;
+          margin: 1.5rem 0 1rem;
+          color: #4B5563;
+        }
+        
+        p {
+          margin-bottom: 1rem;
+          font-size: 1.1rem;
+          color: #4B5563;
+        }
+        
+        .feature-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+          gap: 2rem;
+          margin: 2rem 0;
+        }
+        
+        .feature-card {
+          background: rgba(245, 245, 245, 0.644);
+          border-radius: 12px;
+          padding: 1.5rem;
+          border: 1px solid #E5E7EB;
+          transition: transform 0.3s ease;
+          position: relative;
+          overflow: hidden;
+        }
+        
+        .feature-card::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 4px;
+          background: var(--accent-gradient);
+        }
+        
+        .feature-card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            color: white;
+            font-size: 24px;
+        }
+                
+        .feature-title {
+          font-size: 1.3rem;
+          margin-bottom: 0.75rem;
+          font-weight: 600;
+          color: #111827;
+        }
+        
+        ul {
+          margin: 1rem 0 1rem 1.5rem;
+        }
+        
+        li {
+          margin-bottom: 0.75rem;
+          position: relative;
+        }
+        
+        .steps {
+          counter-reset: step-counter;
+          list-style-type: none;
+          margin-left: 0;
+        }
+        
+        .steps li {
+          counter-increment: step-counter;
+          padding-left: 2.5rem;
+          position: relative;
+          margin-bottom: 1.5rem;
+        }
+        
+        .steps li::before {
+          content: counter(step-counter);
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 28px;
+          height: 28px;
+          background: var(--primary-gradient);
+          border-radius: 50%;
+          color: white;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: bold;
+        }
+        
+        .cta {
+          background: var(--dark-gradient);
+          color: white;
+          text-align: center;
+          padding: 3rem 2rem;
+          border-radius: 16px;
+          margin-bottom: 3rem;
+        }
+        
+        .cta h2 {
+          color: white;
+        }
+        
+        .cta h2::after {
+          background: var(--accent-gradient);
+          left: 50%;
+          transform: translateX(-50%);
+          width: 80px;
+        }
+        
+        .btn {
+          display: inline-block;
+          padding: 0.75rem 1.5rem;
+          background: var(--accent-gradient);
+          color: white;
+          text-decoration: none;
+          border-radius: 8px;
+          font-weight: 600;
+          font-size: 1.1rem;
+          transition: all 0.3s ease;
+          border: none;
+          cursor: pointer;
+          box-shadow: 0 4px 12px rgba(56, 45, 212, 0.3);
+          margin: 1rem 0.5rem;
+        }
+        
+        .btn:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 8px 20px rgba(68, 36, 250, 0.788);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid;
+            border-image-source: linear-gradient(90deg, rgb(0, 159, 207) 1%, rgb(3, 3, 207) 30%, rgb(132, 0, 255) 100%);
+            border-image-slice: 1;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            background-image: linear-gradient(90deg, rgb(0, 159, 207) 1%, rgb(3, 3, 207) 30%, rgb(132, 0, 255) 100%);
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline:hover {
+            color: #fff; /* Change text color on hover */
+            background: transparent;
+        }
+
+        
+        footer {
+          background: white;
+          color: white;
+          text-align: center;
+          padding: 0rem 0;
+        }
+
+        @media (max-width: 768px) {
+          .nav-links,
+          .nav-buttons .btn-secondary {
+              display: none;
+          }
+
+          .hamburger {
+              display: block;
+          }
+
+          .mobile-menu {
+              position: fixed;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100vh;
+              background-color: var(--bg);
+              z-index: 999;
+              padding: 20px;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+              gap: 20px;
+              transform: translateX(-100%);
+              transition: transform 0.3s ease;
+          }
+
+          .mobile-menu.active {
+              transform: translateX(0);
+          }
+
+          .close-menu {
+              position: absolute;
+              top: 20px;
+              right: 20px;
+              background: none;
+              border: none;
+              font-size: 24px;
+              color: var(--text);
+              cursor: pointer;
+          }
+
+          .mobile-links {
+              display: flex;
+              flex-direction: column;
+              gap: 20px;
+              align-items: center;
+              margin-bottom: 30px;
+          }
+
+          .mobile-links a {
+              font-size: 1.2rem;
+              font-weight: 600;
+              color: var(--text);
+          }
+
+          .mobile-buttons {
+              display: flex;
+              flex-direction: column;
+              gap: 15px;
+              width: 80%;
+          }
+
+          .hero-title {
+              font-size: 2rem;
+          }
+
+          .hero-buttons {
+              flex-direction: row;
+              gap: 15px;
+          }
+
+          .steps {
+              flex-direction: column;
+              align-items: center;
+          }
+
+          .step-card {
+              max-width: 100%;
+          }
+      }
+
+      @media (max-width: 576px) {
+          .hero-title {
+              font-size: 1.8rem;
+          }
+
+          .section-title {
+              font-size: 1.8rem;
+          }
+
+          .testimonial-card {
+              min-width: 280px;
+          }
+
+          .footer-bottom {
+              flex-direction: column;
+              text-align: center;
+          }
+      }
+              
+              /* Animations */
+              @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+              }
+              
+              .animated {
+                animation: fadeIn 0.6s ease forwards;
+                opacity: 0;
+              }
+              
+              /* Responsive design */
+              @media (max-width: 768px) {
+                h1 {
+                  font-size: 2.5rem;
+                }
+                
+                .feature-grid {
+                  grid-template-columns: 1fr;
+                }
+                
+                section {
+                  padding: 1.5rem;
+                }
+              }
+      </style>
+<br></br>
+  <div class="container">
+    <section class="animated" style="animation-delay: 0.1s;">
+      <h2>Introduction</h2>
+      <p>Ever found yourself starting a study session on YouTube only to end up watching cat videos two hours later? We've been there too. That's why we created <strong>FocusStudy</strong> – a revolutionary platform that transforms YouTube's vast educational content into a structured, distraction-free learning environment designed specifically for self-taught learners like you.</p>
+      
+      <p>Our platform helps you:</p>
+      <ul>
+        <li><strong>Avoid distractions</strong> by filtering out non-educational content</li>
+        <li><strong>Stay focused</strong> with a dedicated learning environment</li>
+        <li><strong>Improve efficiency</strong> through AI-powered tools and structured study plans</li>
+        <li><strong>Track progress</strong> with comprehensive analytics and assessments</li>
+      </ul>
+    </section>
+
+    <section class="animated" style="animation-delay: 0.2s;">
+      <h2>Key Features</h2>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-icon">📌</div>
+          <h3 class="feature-title">Distraction-Free Learning</h3>
+          <p>Our smart filters ensure you only see study-related videos, eliminating the algorithm-driven distractions that pull you away from learning.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">📝</div>
+          <h3 class="feature-title">AI-Powered Notes</h3>
+          <p>Automatically generate comprehensive notes from any educational video using our advanced LLM technology. Save time while capturing all key concepts.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3 class="feature-title">Personalized Study Plans</h3>
+          <p>Our adaptive learning system creates customized roadmaps based on your goals, knowledge gaps, and learning pace.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">🎯</div>
+          <h3 class="feature-title">Quizzes & Progress Tracking</h3>
+          <p>Reinforce your learning with auto-generated quizzes and track your improvement with detailed analytics and visual progress reports.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">💬</div>
+          <h3 class="feature-title">Collaborative Learning</h3>
+          <p>Connect with fellow learners, join study groups, and participate in topic-focused discussions to enhance your understanding.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="animated" style="animation-delay: 0.3s;">
+      <h2>How It Works</h2>
+      <ol class="steps">
+        <li>
+          <h3>Search for Educational Content</h3>
+          <p>Use our specialized search engine to find study-related YouTube videos filtered by topic, difficulty level, and duration. No more wading through distracting content.</p>
+        </li>
+        <li>
+          <h3>Study with Enhanced Tools</h3>
+          <p>Watch videos in our distraction-free player with integrated note-taking, bookmarking, and timestamp features to mark important concepts.</p>
+        </li>
+        <li>
+          <h3>Generate AI Notes</h3>
+          <p>With a single click, transform any video into comprehensive study notes, complete with key points, definitions, and visual diagrams.</p>
+        </li>
+        <li>
+          <h3>Test Your Knowledge</h3>
+          <p>Take automatically generated quizzes based on video content to reinforce your learning and identify knowledge gaps.</p>
+        </li>
+        <li>
+          <h3>Track Your Progress</h3>
+          <p>Monitor your learning journey through interactive dashboards showing completion rates, quiz scores, and study consistency metrics.</p>
+        </li>
+      </ol>
+    </section>
+
+    <section class="animated" style="animation-delay: 0.4s;">
+      <h2>Why Choose Us?</h2>
+      <p>FocusStudy stands out from traditional learning platforms by harnessing the power of YouTube's vast educational content while solving its biggest challenges:</p>
+      
+      <ul>
+        <li><strong>AI-Driven Learning:</strong> Our advanced algorithms personalize your entire learning experience, from content recommendations to study plan adjustments.</li>
+        <li><strong>Structured Approach:</strong> Transform random YouTube videos into a coherent curriculum that builds knowledge systematically.</li>
+        <li><strong>Distraction-Free Environment:</strong> Study without the constant pull of unrelated content that derails your focus.</li>
+        <li><strong>Time Efficiency:</strong> Learn faster with AI-generated notes, summaries, and targeted quizzes that maximize retention.</li>
+        <li><strong>Community Support:</strong> Connect with learners sharing your interests and goals for motivation and collaborative growth.</li>
+      </ul>
+    </section>
+
+    <section class="cta animated" style="animation-delay: 0.5s;">
+      <h2>Ready to Transform Your Learning Experience?</h2>
+      <p>Join thousands of self-taught learners who have revolutionized their study habits with FocusStudy.</p>
+      <a href="#signup" class="btn">Get Started for Free</a>
+      <a href="#demo" class="btn btn-outline">Watch Demo</a>
+    </section>
+  </div>
+
+  <footer>
+    <div class="container">
+      <p>© 2025 FocusStudy. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+// Scroll animation
+document.addEventListener('DOMContentLoaded', () => {
+  const animatedElements = document.querySelectorAll('.animated');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.animationPlayState = 'running';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  animatedElements.forEach(element => {
+    element.style.animationPlayState = 'paused';
+    observer.observe(element);
+  });
+});
+</script>
+</body> 
+</html>
