@@ -26,21 +26,28 @@
         }
 
         /* General Styles */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: var(--bg-light);
-            background-image: url('ibme1oze.png'); /* Replace with your image URL */
-            background-size: cover; /* Ensures the image covers the entire background */
-            background-position: center; /* Centers the image */
-            background-repeat: no-repeat; /* Prevents tiling */
-            color: var(--text-light);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+            body {
+                font-family: Arial, sans-serif;
+                background: linear-gradient(135deg, #ffffffa4, #55aaffa4, #ad55ffa9);
+                background-size: 300% 300%;
+                animation: gradientAnimation 6s ease infinite;
+                color: var(--text-light);
+                margin: 0;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+            }
+
+            /* Adding animation for a smooth gradient effect */
+            @keyframes gradientAnimation {
+                0% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+                100% { background-position: 0% 50%; }
+            }
+
+
 
 
         .container {
