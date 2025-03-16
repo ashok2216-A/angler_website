@@ -28,7 +28,7 @@
         /* General Styles */
             body {
                 font-family: Arial, sans-serif;
-                background: linear-gradient(135deg, #ffffffa4, #55aaffa4, #ad55ffa9);
+                background: linear-gradient(135deg, #8df7fff1, #6055ffa4, #ad55ffa9);
                 background-size: 300% 300%;
                 animation: gradientAnimation 6s ease infinite;
                 color: var(--text-light);
@@ -67,7 +67,7 @@
             margin-bottom: 20px;
         } */
                 .logo {
-            font-size: 24px;
+            font-size: 34px;
             font-weight: 700;
             background: linear-gradient(90deg, rgb(0, 159, 207) 1%, rgb(3, 3, 207) 30%, rgb(132, 0, 255) 100%);
             -webkit-background-clip: text;
@@ -75,7 +75,7 @@
             display: flex;
             align-items: center;
             left: 100%;
-            transform: translateX(40%);
+            transform: translateX(32%);
             gap: 8px;
         }
 
@@ -110,7 +110,7 @@
             display: block;
             margin-bottom: 8px;
             font-weight: 500;
-            color: rgb(202, 202, 202);
+            color: rgba(255, 255, 255, 0.573);
         }
 
         .form-group input {
@@ -155,11 +155,25 @@
             border-radius: 4px;
             cursor: pointer;
             transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
         }
 
+        /* When checkbox is checked, show tick */
         .custom-checkbox.checked {
             background-color: var(--primary);
             border-color: var(--primary);
+        }
+
+        /* Add tick mark inside checkbox */
+        .custom-checkbox.checked::after {
+            content: "\2713"; /* Unicode for checkmark ✓ */
+            font-size: 12px;
+            color: white;
+            font-weight: bold;
+            position: absolute;
         }
 
         .forgot-password {
@@ -175,7 +189,7 @@
         /* Button Styles */
         .btn {
             width: 50%;
-            right: 10%;
+            right: -25%;
             transform: translateY(10%);
             padding: 12px;
             background: var(--gradient);
@@ -190,6 +204,8 @@
             align-items: center;
             gap: 10px;
             transition: var(--transition);
+            display: flex;
+            position: relative;
         }
 
         .btn:hover {
@@ -201,6 +217,8 @@
             visibility: hidden;
         }
 
+
+        /* Hide spinner by default */
         .btn .spinner {
             display: none;
             width: 20px;
@@ -211,14 +229,27 @@
             animation: spin 1s linear infinite;
         }
 
-        .btn.loading .spinner {
-            display: block;
+        /* When button is in loading state, show spinner & hide text */
+        .btn.loading {
+            pointer-events: none; /* Prevent multiple clicks */
         }
 
+        /* Show spinner & hide text when loading */
+        .btn.loading .spinner {
+            display: block;
+            position: absolute;
+        }
+
+        .btn.loading span {
+            visibility: hidden; /* Hide button text */
+        }
+
+        /* Spinner Animation */
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
 
         /* Social Login Styles */
         .social-login {
@@ -243,8 +274,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: var(--card-light);
-            border: 1px solid var(--input-border);
+            background-color: rgba(255, 255, 255, 0.559);
+            border: 0px solid var(--input-border);
             cursor: pointer;
             transition: var(--transition);
         }
@@ -280,7 +311,7 @@
         }
 
         .toast.success {
-            background-color: #28a745;
+            background-color: #3cda56;
         }
 
         .toast.error {
