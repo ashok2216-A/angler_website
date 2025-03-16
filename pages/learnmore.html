@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Learn More - FocusStudy</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Angler - Turn YouTube Videos into Smart Study Notes & Plans. AI-powered educational tool for students.">
+    <title>Angler - AI-Powered Study Notes from YouTube</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    
 </head>
-<body>
+<body class="light-theme">
+    <!-- Header -->
     <header>
         <nav class="navbar">
             <a href="#" class="logo">
-                <!-- <img src="logo.png" alt="" class="logo-img"> -->
                 About Angler
             </a>
             <div class="nav-links">
@@ -22,18 +24,54 @@
                 <a href="#about">About Us</a>
                 <a href="#contact">Contact</a>
             </div>
+            
             <div class="nav-buttons">
-                <!-- <a href="pages/login.html" class="btn btn-primary">Start For Free</a>
-                <a href="pages/learnmore.html" class="btn btn-secondary">Learn More</a> -->
-                <!-- <button class="hamburger">
+                <button class="hamburger">
                     <i class="fas fa-bars"></i>
-                </button> -->
+                </button>
+            </div>       
+        <!-- Mobile Navigation Menu -->
+        <div class="mobile-menu">
+            <button class="close-menu">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="mobile-links">
+                <a href="#home">Home</a>
+                <a href="#features">Features</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#about">About Us</a>
+                <a href="#contact">Contact</a>
             </div>
-            <button class="hamburger">
-              <i class="fas fa-bars"></i>
-          </button>
-        </nav>
-    </header>
+            </div>
+        </div>
+    <!-- JavaScript for Mobile Menu -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const hamburger = document.querySelector(".hamburger");
+            const mobileMenu = document.querySelector(".mobile-menu");
+            const closeMenu = document.querySelector(".close-menu");
+
+            // Open mobile menu
+            hamburger.addEventListener("click", function () {
+                mobileMenu.classList.add("active");
+            });
+
+            // Close mobile menu
+            closeMenu.addEventListener("click", function () {
+                mobileMenu.classList.remove("active");
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener("click", function (event) {
+                if (!mobileMenu.contains(event.target) && !hamburger.contains(event.target) && !event.target.closest('.mobile-menu')) {
+                    mobileMenu.classList.remove("active");
+                }
+            });
+        });
+        </script>
+    </nav>
+</header>
     <br><br></br></br>
     <section>
         <div class="container">
@@ -209,6 +247,80 @@
             gap: 15px;
             align-items: center;
         }
+
+
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.815);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .mobile-menu.active {
+            transform: translateX(0);
+        }
+
+        .mobile-menu .close-menu {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 28px;
+            color: rgba(255, 255, 255, 0.726);
+            cursor: pointer;
+        }
+
+        .mobile-links {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            text-align: center;
+        }
+
+        .mobile-links a {
+            text-decoration: none;
+            font-size: 1.6rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #5c41f88a, #2c99ff8f, #1fcbff93); /* Gradient Color */
+            -webkit-background-clip: text; /* Apply gradient to text */
+            -webkit-text-fill-color: transparent; /* Make text transparent to show gradient */
+            transition: transform 0.2s ease-in-out; /* Smooth transition effect */
+            cursor: pointer; /* Pointer cursor on hover */
+        }
+
+        .mobile-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .mobile-buttons .btn {
+            display: block;
+            text-align: center;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .btn-navsecondary {
+            background-color: #0314adb6;
+            color: rgb(255, 255, 255);
+
+        }
+
         .container {
           max-width: 1200px;
           margin: 0 auto;
@@ -285,7 +397,7 @@
         }
         
         .feature-card {
-          background: rgba(245, 245, 245, 0.644);
+          background: rgba(246, 246, 246, 0.689);
           border-radius: 12px;
           padding: 1.5rem;
           border: 1px solid #E5E7EB;
@@ -441,60 +553,6 @@
 
           .hamburger {
               display: block;
-          }
-
-          .mobile-menu {
-              position: fixed;
-              top: 0;
-              left: 0;
-              width: 100%;
-              height: 100vh;
-              background-color: var(--bg);
-              z-index: 999;
-              padding: 20px;
-              display: flex;
-              flex-direction: column;
-              justify-content: center;
-              align-items: center;
-              gap: 20px;
-              transform: translateX(-100%);
-              transition: transform 0.3s ease;
-          }
-
-          .mobile-menu.active {
-              transform: translateX(0);
-          }
-
-          .close-menu {
-              position: absolute;
-              top: 20px;
-              right: 20px;
-              background: none;
-              border: none;
-              font-size: 24px;
-              color: var(--text);
-              cursor: pointer;
-          }
-
-          .mobile-links {
-              display: flex;
-              flex-direction: column;
-              gap: 20px;
-              align-items: center;
-              margin-bottom: 30px;
-          }
-
-          .mobile-links a {
-              font-size: 1.2rem;
-              font-weight: 600;
-              color: var(--text);
-          }
-
-          .mobile-buttons {
-              display: flex;
-              flex-direction: column;
-              gap: 15px;
-              width: 80%;
           }
 
           .hero-title {
@@ -653,7 +711,7 @@
     <section class="cta animated" style="animation-delay: 0.5s;">
       <h2>Ready to Transform Your Learning Experience?</h2>
       <p>Join thousands of self-taught learners who have revolutionized their study habits with FocusStudy.</p>
-      <a href="#signup" class="btn">Get Started for Free</a>
+      <a href="pages/login.html" class="btn">Get Started for Free</a>
       <a href="#demo" class="btn btn-outline">Watch Demo</a>
     </section>
   </div>
