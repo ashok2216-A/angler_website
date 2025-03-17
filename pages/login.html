@@ -376,34 +376,38 @@
 
     <div class="toast" id="toast"></div>
 
+    <!-- Supabase JS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Supabase client
+            const SUPABASE_URL = 'https://nlseukvysoshudzdvfzu.supabase.co';
+            const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5sc2V1a3Z5c29zaHVkemR2Znp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE4NDg0NjAsImV4cCI6MjA1NzQyNDQ2MH0.JlfPqzxbH2lHXqT3rARjN0YAvqUOHF2oGdvdsXfT_VY';
+            
+            // Check if supabase is loaded
+            if (typeof supabase === 'undefined') {
+                console.error('Supabase client not loaded. Please make sure to include the Supabase script.');
+                showToast('Authentication service not available', 'error');
+                return;
+            }
+            
+            // Create the Supabase client properly
+            const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
             // DOM elements
             const loginForm = document.getElementById('loginForm');
             const emailInput = document.getElementById('email');
             const passwordInput = document.getElementById('password');
             const emailError = document.getElementById('email-error');
             const passwordError = document.getElementById('password-error');
-            const rememberCheckbox = document.getElementById('remember');
             const customCheckbox = document.getElementById('custom-checkbox');
             const loginBtn = document.getElementById('login-btn');
             const toast = document.getElementById('toast');
             const socialButtons = document.querySelectorAll('.social-button');
-
-            // Toggle custom checkbox
-            customCheckbox.addEventListener('click', function() {
-                this.classList.toggle('checked');
-                rememberCheckbox.checked = this.classList.contains('checked');
-            });
-
-            // Validate email
-            function isValidEmail(email) {
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                return emailRegex.test(email);
-            }
-
+            
             // Show toast notification
             function showToast(message, type) {
+                const toast = document.getElementById('toast');
                 toast.textContent = message;
                 toast.className = `toast ${type}`;
                 toast.classList.add('show');
@@ -412,9 +416,66 @@
                     toast.classList.remove('show');
                 }, 3000);
             }
+            
+            // Track current mode (login or signup)
+            let isLoginMode = true;
+            
+            // Add signup toggle element
+            const container = document.querySelector('.container');
+            const signupToggle = document.createElement('div');
+            signupToggle.className = 'signup-toggle';
+            signupToggle.innerHTML = 'Don\'t have an account? <a href="#" id="toggle-signup">Sign up</a>';
+            signupToggle.style.marginTop = '20px';
+            signupToggle.style.textAlign = 'center';
+            signupToggle.style.color = 'rgba(255, 255, 255, 0.7)';
+            container.appendChild(signupToggle);
+            
+            const toggleLink = document.getElementById('toggle-signup');
+            const welcomeHeading = document.querySelector('h1');
+            
+            // Toggle between login and signup modes
+            toggleLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                isLoginMode = !isLoginMode;
+                
+                if (isLoginMode) {
+                    welcomeHeading.textContent = 'Welcome Back';
+                    loginBtn.querySelector('.btn-text').textContent = 'Sign In';
+                    toggleLink.textContent = 'Sign up';
+                    signupToggle.innerHTML = 'Don\'t have an account? <a href="#" id="toggle-signup">Sign up</a>';
+                } else {
+                    welcomeHeading.textContent = 'Create Account';
+                    loginBtn.querySelector('.btn-text').textContent = 'Sign Up';
+                    toggleLink.textContent = 'Sign in';
+                    signupToggle.innerHTML = 'Already have an account? <a href="#" id="toggle-signup">Sign in</a>';
+                }
+                
+                // Reset form state
+                emailError.style.display = 'none';
+                passwordError.style.display = 'none';
+                emailInput.style.borderColor = 'var(--input-border)';
+                passwordInput.style.borderColor = 'var(--input-border)';
+                
+                // Re-attach event listener to the new toggle link
+                document.getElementById('toggle-signup').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    toggleLink.click();
+                });
+            });
+
+            // Toggle custom checkbox
+            customCheckbox.addEventListener('click', function() {
+                this.classList.toggle('checked');
+            });
+
+            // Validate email
+            function isValidEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
 
             // Form submission
-            loginForm.addEventListener('submit', function(e) {
+            loginForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 let isValid = true;
                 
@@ -442,26 +503,86 @@
                     // Show loading state
                     loginBtn.classList.add('loading');
                     
-                    // Simulate API call
-                    setTimeout(() => {
-                        loginBtn.classList.remove('loading');
-                        showToast('Successfully logged in!', 'success');
+                    try {
+                        let result;
                         
-                        // For demo purposes, redirect after 1 second
-                        setTimeout(() => {
-                            // Redirect to dashboard or home page
-                            // window.location.href = '/dashboard';
-                            alert('Login successful! Redirect to dashboard...');
-                        }, 1000);
-                    }, 1500);
+                        if (isLoginMode) {
+                            // Login with Supabase
+                            result = await supabaseClient.auth.signInWithPassword({
+                                email: emailInput.value,
+                                password: passwordInput.value
+                            });
+                        } else {
+                            // Sign up with Supabase
+                            result = await supabaseClient.auth.signUp({
+                                email: emailInput.value,
+                                password: passwordInput.value
+                            });
+                        }
+                        
+                        // Handle the result
+                        if (result.error) {
+                            showToast(result.error.message, 'error');
+                        } else {
+                            if (isLoginMode) {
+                                showToast('Successfully logged in!', 'success');
+                                // Redirect to dashboard after 1 second
+                                setTimeout(() => {
+                                    // Replace with your dashboard URL
+                                    // window.location.href = '/dashboard';
+                                    alert('Login successful! Redirect to dashboard...');
+                                }, 1000);
+                            } else {
+                                showToast('Account created! Please check your email to confirm your account.', 'success');
+                                // Switch back to login mode
+                                setTimeout(() => {
+                                    toggleLink.click();
+                                }, 2000);
+                            }
+                        }
+                    } catch (err) {
+                        showToast('An error occurred. Please try again.', 'error');
+                        console.error('Authentication error:', err);
+                    } finally {
+                        loginBtn.classList.remove('loading');
+                    }
                 }
             });
 
             // Social login buttons
             socialButtons.forEach(button => {
-                button.addEventListener('click', function() {
+                button.addEventListener('click', async function() {
                     const provider = this.id.split('-')[0];
-                    showToast(`Logging in with ${provider.charAt(0).toUpperCase() + provider.slice(1)}...`, 'success');
+                    showToast(`Attempting to log in with ${provider.charAt(0).toUpperCase() + provider.slice(1)}...`, 'success');
+                    
+                    try {
+                        let result;
+                        switch(provider) {
+                            case 'google':
+                                result = await supabaseClient.auth.signInWithOAuth({
+                                    provider: 'google'
+                                });
+                                break;
+                            case 'facebook':
+                                result = await supabaseClient.auth.signInWithOAuth({
+                                    provider: 'facebook'
+                                });
+                                break;
+                            case 'apple':
+                                result = await supabaseClient.auth.signInWithOAuth({
+                                    provider: 'apple'
+                                });
+                                break;
+                        }
+                        
+                        if (result.error) {
+                            showToast(result.error.message, 'error');
+                        }
+                        // The redirect will be handled by Supabase automatically
+                    } catch (err) {
+                        showToast('Social login failed. Please try again.', 'error');
+                        console.error('Social auth error:', err);
+                    }
                 });
             });
 
@@ -473,9 +594,22 @@
                 });
                 
                 input.addEventListener('blur', function() {
-                    this.parentElement.querySelector('label').style.color = 'var(--text-dark)';
+                    this.parentElement.querySelector('label').style.color = 'rgba(255, 255, 255, 0.573)';
                 });
             });
+            
+            // Check if user is already logged in
+            async function checkUser() {
+                const { data, error } = await supabaseClient.auth.getSession();
+                if (data.session) {
+                    // User is logged in, redirect to dashboard
+                    // window.location.href = '/dashboard';
+                    alert('Already logged in! Redirect to dashboard...');
+                }
+            }
+            
+            // Check user status when page loads
+            checkUser();
         });
     </script>
 </body>
