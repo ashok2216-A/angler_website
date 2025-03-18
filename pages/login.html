@@ -4,7 +4,391 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modern Login Page</title>
+    <!-- CSS remains unchanged -->
     <style>
+        /* All existing CSS remains the same */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="#" class="logo">
+            Angler
+        </a>
+        <h1>Welcome Back</h1>
+        <form id="loginForm">
+            <!-- Username field - hidden by default for login mode -->
+            <div class="form-group" id="username-group" style="display: none;">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Choose a username">
+                <div class="error" id="username-error">Username must be at least 3 characters</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="Enter your email">
+                <div class="error" id="email-error">Please enter a valid email address</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter your password">
+                <div class="error" id="password-error">Password must be at least 6 characters</div>
+            </div>
+            
+            <!-- Confirm Password field - hidden by default for login mode -->
+            <div class="form-group" id="confirm-password-group" style="display: none;">
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" id="confirm-password" placeholder="Confirm your password">
+                <div class="error" id="confirm-password-error">Passwords do not match</div>
+            </div>
+            
+            <div class="remember-forgot">
+                <div class="remember-me">
+                    <div class="custom-checkbox" id="custom-checkbox"></div>
+                    <label for="remember">Remember me</label>
+                </div>
+                <a href="#" class="forgot-password">Forgot Password?</a>
+            </div>
+            <button type="submit" class="btn" id="login-btn">
+                <span class="btn-text">Sign In</span>
+                <div class="spinner"></div>
+            </button>
+        </form>
+        <div class="social-login">
+            <div class="social-login-text">Or continue with</div>
+            <div class="social-buttons">
+                <div class="social-button" id="google-login">
+                    <svg class="social-icon" viewBox="0 0 24 24">
+                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                    </svg>
+                </div>
+                <div class="social-button" id="facebook-login">
+                    <svg class="social-icon" viewBox="0 0 24 24">
+                        <path d="M20.9,2H3.1C2.5,2,2,2.5,2,3.1v17.8c0,0.6,0.5,1.1,1.1,1.1h9.6v-7.8h-2.6v-3h2.6V9.2c0-2.6,1.6-4,3.9-4c1.1,0,2.1,0.1,2.3,0.1v2.7h-1.6c-1.3,0-1.5,0.6-1.5,1.5v1.9h3l-0.4,3h-2.6V22h5.1c0.6,0,1.1-0.5,1.1-1.1V3.1C22,2.5,21.5,2,20.9,2z" fill="#3b5998"/>
+                    </svg>
+                </div>
+                <div class="social-button" id="apple-login">
+                    <svg class="social-icon" viewBox="0 0 24 24">
+                        <path d="M18.71,19.5C17.88,20.74 17,21.95 15.66,21.97C14.32,22 13.89,21.18 12.37,21.18C10.84,21.18 10.37,21.95 9.1,22C7.79,22.05 6.8,20.68 5.96,19.47C4.25,17 2.94,12.45 4.7,9.39C5.57,7.87 7.13,6.91 8.82,6.88C10.1,6.86 11.32,7.75 12.11,7.75C12.89,7.75 14.37,6.68 15.92,6.84C16.57,6.87 18.39,7.1 19.56,8.82C19.47,8.88 17.39,10.1 17.41,12.63C17.44,15.65 20.06,16.66 20.09,16.67C20.06,16.74 19.67,18.11 18.71,19.5M13,3.5C13.73,2.67 14.94,2.04 15.94,2C16.07,3.17 15.6,4.35 14.9,5.19C14.21,6.04 13.07,6.7 11.95,6.61C11.8,5.46 12.36,4.26 13,3.5Z" fill="#000000"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <!-- Supabase JS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+    // Initialize Supabase client
+    const SUPABASE_URL = 'https://ndphubnkuzaurbkvoaqf.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kcGh1Ym5rdXphdXJia3ZvYXFmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIyNzcxNzgsImV4cCI6MjA1Nzg1MzE3OH0.Oi-q_OFbx7USAjWT8YU5pEo8HMuJ_N9hsxw9c22zx2k';
+
+    // Check if Supabase is loaded
+    if (typeof supabase === 'undefined') {
+        console.error('Supabase client not loaded. Please make sure to include the Supabase script.');
+        showToast('Authentication service not available', 'error');
+        return;
+    }
+
+    // Create the Supabase client
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // DOM elements
+    const loginForm = document.getElementById('loginForm');
+    const usernameInput = document.getElementById('username');
+    const usernameGroup = document.getElementById('username-group');
+    const usernameError = document.getElementById('username-error');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const confirmPasswordInput = document.getElementById('confirm-password');
+    const confirmPasswordGroup = document.getElementById('confirm-password-group');
+    const confirmPasswordError = document.getElementById('confirm-password-error');
+    const emailError = document.getElementById('email-error');
+    const passwordError = document.getElementById('password-error');
+    const customCheckbox = document.getElementById('custom-checkbox');
+    const loginBtn = document.getElementById('login-btn');
+    const toast = document.getElementById('toast');
+    const socialButtons = document.querySelectorAll('.social-button');
+
+    // Show toast notification
+    function showToast(message, type) {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = `toast ${type}`;
+        toast.classList.add('show');
+
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 3000);
+    }
+
+    // Track current mode (login or signup)
+    let isLoginMode = true;
+
+    // Add signup toggle element
+    const container = document.querySelector('.container');
+    const signupToggle = document.createElement('div');
+    signupToggle.className = 'signup-toggle';
+    signupToggle.innerHTML = 'Don\'t have an account? <a href="#" id="toggle-signup">Sign up</a>';
+    signupToggle.style.marginTop = '20px';
+    signupToggle.style.textAlign = 'center';
+    signupToggle.style.color = 'rgba(255, 255, 255, 0.7)';
+    container.appendChild(signupToggle);
+
+    const toggleLink = document.getElementById('toggle-signup');
+    const welcomeHeading = document.querySelector('h1');
+
+    // Toggle between login and signup modes
+    toggleLink.addEventListener('click', function (e) {
+        e.preventDefault();
+        isLoginMode = !isLoginMode;
+
+        if (isLoginMode) {
+            welcomeHeading.textContent = 'Welcome Back';
+            loginBtn.querySelector('.btn-text').textContent = 'Sign In';
+            toggleLink.textContent = 'Sign up';
+            signupToggle.innerHTML = 'Don\'t have an account? <a href="#" id="toggle-signup">Sign up</a>';
+
+            // Hide signup-only fields
+            usernameGroup.style.display = 'none';
+            confirmPasswordGroup.style.display = 'none';
+        } else {
+            welcomeHeading.textContent = 'Create Account';
+            loginBtn.querySelector('.btn-text').textContent = 'Sign Up';
+            toggleLink.textContent = 'Sign in';
+            signupToggle.innerHTML = 'Already have an account? <a href="#" id="toggle-signup">Sign in</a>';
+
+            // Show signup-only fields
+            usernameGroup.style.display = 'block';
+            confirmPasswordGroup.style.display = 'block';
+        }
+
+        // Reset form state
+        emailError.style.display = 'none';
+        passwordError.style.display = 'none';
+        usernameError.style.display = 'none';
+        confirmPasswordError.style.display = 'none';
+        emailInput.style.borderColor = 'var(--input-border)';
+        passwordInput.style.borderColor = 'var(--input-border)';
+        usernameInput.style.borderColor = 'var(--input-border)';
+        confirmPasswordInput.style.borderColor = 'var(--input-border)';
+
+        // Re-attach event listener to the new toggle link
+        document.getElementById('toggle-signup').addEventListener('click', function (e) {
+            e.preventDefault();
+            toggleLink.click();
+        });
+    });
+
+    // Toggle custom checkbox
+    customCheckbox.addEventListener('click', function () {
+        this.classList.toggle('checked');
+    });
+
+    // Validate email
+    function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+
+    // Form submission
+    loginForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        let isValid = true;
+
+        // Validate email
+        if (!isValidEmail(emailInput.value)) {
+            emailError.style.display = 'block';
+            emailInput.style.borderColor = 'var(--error-color)';
+            isValid = false;
+        } else {
+            emailError.style.display = 'none';
+            emailInput.style.borderColor = 'var(--input-border)';
+        }
+
+        // Validate password
+        if (passwordInput.value.length < 6) {
+            passwordError.style.display = 'block';
+            passwordInput.style.borderColor = 'var(--error-color)';
+            isValid = false;
+        } else {
+            passwordError.style.display = 'none';
+            passwordInput.style.borderColor = 'var(--input-border)';
+        }
+
+        // Additional validations for signup mode
+        if (!isLoginMode) {
+            // Validate username
+            if (usernameInput.value.length < 3) {
+                usernameError.style.display = 'block';
+                usernameInput.style.borderColor = 'var(--error-color)';
+                isValid = false;
+            } else {
+                usernameError.style.display = 'none';
+                usernameInput.style.borderColor = 'var(--input-border)';
+            }
+
+            // Validate confirm password
+            if (confirmPasswordInput.value !== passwordInput.value) {
+                confirmPasswordError.style.display = 'block';
+                confirmPasswordInput.style.borderColor = 'var(--error-color)';
+                isValid = false;
+            } else {
+                confirmPasswordError.style.display = 'none';
+                confirmPasswordInput.style.borderColor = 'var(--input-border)';
+            }
+        }
+
+        if (isValid) {
+            // Show loading state
+            loginBtn.classList.add('loading');
+
+            try {
+                let result;
+
+                if (isLoginMode) {
+                    // Login with Supabase
+                    result = await supabaseClient.auth.signInWithPassword({
+                        email: emailInput.value,
+                        password: passwordInput.value
+                    });
+                } else {
+                    // Sign up with Supabase
+                    result = await supabaseClient.auth.signUp({
+                        email: emailInput.value,
+                        password: passwordInput.value,
+                        options: {
+                            data: {
+                                username: usernameInput.value, // Store username
+                                display_name: usernameInput.value // Store display name
+                            }
+                        }
+                    });
+                }
+
+                // Handle the result
+                if (result.error) {
+                    showToast(result.error.message, 'error');
+                } else {
+                    if (isLoginMode) {
+                        showToast('Successfully logged in!', 'success');
+                        // Redirect to dashboard after 1 second
+                        setTimeout(() => {
+                            // Replace with your dashboard URL
+                            // window.location.href = '/dashboard';
+                            alert('Login successful! Redirect to dashboard...');
+                        }, 1000);
+                    } else {
+                        showToast('Account created! Please check your email to confirm your account.', 'success');
+                        // Switch back to login mode
+                        setTimeout(() => {
+                            toggleLink.click();
+                        }, 2000);
+                    }
+                }
+            } catch (err) {
+                showToast('An error occurred. Please try again.', 'error');
+                console.error('Authentication error:', err);
+            } finally {
+                loginBtn.classList.remove('loading');
+            }
+        }
+    });
+
+    // Function to update display name
+    async function updateDisplayName(newDisplayName) {
+        const { data, error } = await supabaseClient.auth.updateUser({
+            data: {
+                display_name: newDisplayName
+            }
+        });
+
+        if (error) {
+            showToast('Error updating display name', 'error');
+            console.error('Error updating user:', error.message);
+        } else {
+            showToast('Display name updated successfully', 'success');
+            console.log('User updated successfully:', data);
+        }
+    }
+
+    // Example: Update display name on button click
+    document.getElementById('update-display-name-btn')?.addEventListener('click', async function () {
+        const newDisplayName = document.getElementById('new-display-name').value;
+        await updateDisplayName(newDisplayName);
+    });
+
+    // Social login buttons
+    socialButtons.forEach(button => {
+        button.addEventListener('click', async function () {
+            const provider = this.id.split('-')[0];
+            showToast(`Attempting to log in with ${provider.charAt(0).toUpperCase() + provider.slice(1)}...`, 'success');
+
+            try {
+                let result;
+                switch (provider) {
+                    case 'google':
+                        result = await supabaseClient.auth.signInWithOAuth({
+                            provider: 'google'
+                        });
+                        break;
+                    case 'facebook':
+                        result = await supabaseClient.auth.signInWithOAuth({
+                            provider: 'facebook'
+                        });
+                        break;
+                    case 'apple':
+                        result = await supabaseClient.auth.signInWithOAuth({
+                            provider: 'apple'
+                        });
+                        break;
+                }
+
+                if (result.error) {
+                    showToast(result.error.message, 'error');
+                }
+                // The redirect will be handled by Supabase automatically
+            } catch (err) {
+                showToast('Social login failed. Please try again.', 'error');
+                console.error('Social auth error:', err);
+            }
+        });
+    });
+
+    // Input focus effects
+    const inputs = document.querySelectorAll('input');
+    inputs.forEach(input => {
+        input.addEventListener('focus', function () {
+            this.parentElement.querySelector('label').style.color = 'var(--primary)';
+        });
+
+        input.addEventListener('blur', function () {
+            this.parentElement.querySelector('label').style.color = 'rgba(255, 255, 255, 0.573)';
+        });
+    });
+
+    // Check if user is already logged in
+    async function checkUser() {
+        const { data, error } = await supabaseClient.auth.getSession();
+        if (data.session) {
+            // User is logged in, redirect to dashboard
+            // window.location.href = '/dashboard';
+            alert('Already logged in! Redirect to dashboard...');
+        }
+    }
+
+    // Check user status when page loads
+    checkUser();
+});
+    </script>
+    <style>
+        /* All existing CSS remains the same */
         /* CSS Variables */
         :root {
             --primary: #4361EE;
@@ -110,13 +494,14 @@
             display: block;
             margin-bottom: 8px;
             font-weight: 500;
-            color: rgba(255, 255, 255, 0.573);
+            color: rgba(255, 255, 255, 0.651);
         }
 
         .form-group input {
             width: 100%;
             padding: 12px;
-            border: 1px solid var(--input-border);
+            background-color: #ffffff50;
+            border: 0px solid var(--input-border);
             border-radius: var(--border-radius);
             font-size: 16px;
             transition: var(--transition);
@@ -317,303 +702,6 @@
         .toast.error {
             background-color: var(--error-color);
         }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <a href="#" class="logo">
-            Angler
-        </a>
-        <h1>Welcome Back</h1>
-        <form id="loginForm">
-            <div class="form-group">
-                <label for="email">Email Address</label>
-                <input type="email" id="email" placeholder="Enter your email">
-                <div class="error" id="email-error">Please enter a valid email address</div>
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" placeholder="Enter your password">
-                <div class="error" id="password-error">Password must be at least 6 characters</div>
-            </div>
-            <div class="remember-forgot">
-                <div class="remember-me">
-                    <!-- <input type="checkbox" id="remember"> -->
-                    <div class="custom-checkbox" id="custom-checkbox"></div>
-                    <label for="remember">Remember me</label>
-                </div>
-                <a href="#" class="forgot-password">Forgot Password?</a>
-            </div>
-            <button type="submit" class="btn" id="login-btn">
-                <span class="btn-text">Sign In</span>
-                <div class="spinner"></div>
-            </button>
-        </form>
-        <div class="social-login">
-            <div class="social-login-text">Or continue with</div>
-            <div class="social-buttons">
-                <div class="social-button" id="google-login">
-                    <svg class="social-icon" viewBox="0 0 24 24">
-                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-                        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-                    </svg>
-                </div>
-                <div class="social-button" id="facebook-login">
-                    <svg class="social-icon" viewBox="0 0 24 24">
-                        <path d="M20.9,2H3.1C2.5,2,2,2.5,2,3.1v17.8c0,0.6,0.5,1.1,1.1,1.1h9.6v-7.8h-2.6v-3h2.6V9.2c0-2.6,1.6-4,3.9-4c1.1,0,2.1,0.1,2.3,0.1v2.7h-1.6c-1.3,0-1.5,0.6-1.5,1.5v1.9h3l-0.4,3h-2.6V22h5.1c0.6,0,1.1-0.5,1.1-1.1V3.1C22,2.5,21.5,2,20.9,2z" fill="#3b5998"/>
-                    </svg>
-                </div>
-                <div class="social-button" id="apple-login">
-                    <svg class="social-icon" viewBox="0 0 24 24">
-                        <path d="M18.71,19.5C17.88,20.74 17,21.95 15.66,21.97C14.32,22 13.89,21.18 12.37,21.18C10.84,21.18 10.37,21.95 9.1,22C7.79,22.05 6.8,20.68 5.96,19.47C4.25,17 2.94,12.45 4.7,9.39C5.57,7.87 7.13,6.91 8.82,6.88C10.1,6.86 11.32,7.75 12.11,7.75C12.89,7.75 14.37,6.68 15.92,6.84C16.57,6.87 18.39,7.1 19.56,8.82C19.47,8.88 17.39,10.1 17.41,12.63C17.44,15.65 20.06,16.66 20.09,16.67C20.06,16.74 19.67,18.11 18.71,19.5M13,3.5C13.73,2.67 14.94,2.04 15.94,2C16.07,3.17 15.6,4.35 14.9,5.19C14.21,6.04 13.07,6.7 11.95,6.61C11.8,5.46 12.36,4.26 13,3.5Z" fill="#000000"/>
-                    </svg>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="toast" id="toast"></div>
-
-    <!-- Supabase JS SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script>
-
-
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize Supabase client
-            const SUPABASE_URL = 'https://nlseukvysoshudzdvfzu.supabase.co';
-            const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5sc2V1a3Z5c29zaHVkemR2Znp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE4NDg0NjAsImV4cCI6MjA1NzQyNDQ2MH0.JlfPqzxbH2lHXqT3rARjN0YAvqUOHF2oGdvdsXfT_VY';
-            
-            // Check if supabase is loaded
-            if (typeof supabase === 'undefined') {
-                console.error('Supabase client not loaded. Please make sure to include the Supabase script.');
-                showToast('Authentication service not available', 'error');
-                return;
-            }
-            
-            // Create the Supabase client properly
-            const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-            // DOM elements
-            const loginForm = document.getElementById('loginForm');
-            const emailInput = document.getElementById('email');
-            const passwordInput = document.getElementById('password');
-            const emailError = document.getElementById('email-error');
-            const passwordError = document.getElementById('password-error');
-            const customCheckbox = document.getElementById('custom-checkbox');
-            const loginBtn = document.getElementById('login-btn');
-            const toast = document.getElementById('toast');
-            const socialButtons = document.querySelectorAll('.social-button');
-            
-            // Show toast notification
-            function showToast(message, type) {
-                const toast = document.getElementById('toast');
-                toast.textContent = message;
-                toast.className = `toast ${type}`;
-                toast.classList.add('show');
-                
-                setTimeout(() => {
-                    toast.classList.remove('show');
-                }, 3000);
-            }
-            
-            // Track current mode (login or signup)
-            let isLoginMode = true;
-            
-            // Add signup toggle element
-            const container = document.querySelector('.container');
-            const signupToggle = document.createElement('div');
-            signupToggle.className = 'signup-toggle';
-            signupToggle.innerHTML = 'Don\'t have an account? <a href="#" id="toggle-signup">Sign up</a>';
-            signupToggle.style.marginTop = '20px';
-            signupToggle.style.textAlign = 'center';
-            signupToggle.style.color = 'rgba(255, 255, 255, 0.7)';
-            container.appendChild(signupToggle);
-            
-            const toggleLink = document.getElementById('toggle-signup');
-            const welcomeHeading = document.querySelector('h1');
-            
-            // Toggle between login and signup modes
-            toggleLink.addEventListener('click', function(e) {
-                e.preventDefault();
-                isLoginMode = !isLoginMode;
-                
-                if (isLoginMode) {
-                    welcomeHeading.textContent = 'Welcome Back';
-                    loginBtn.querySelector('.btn-text').textContent = 'Sign In';
-                    toggleLink.textContent = 'Sign up';
-                    signupToggle.innerHTML = 'Don\'t have an account? <a href="#" id="toggle-signup">Sign up</a>';
-                } else {
-                    welcomeHeading.textContent = 'Create Account';
-                    loginBtn.querySelector('.btn-text').textContent = 'Sign Up';
-                    toggleLink.textContent = 'Sign in';
-                    signupToggle.innerHTML = 'Already have an account? <a href="#" id="toggle-signup">Sign in</a>';
-                }
-                
-                // Reset form state
-                emailError.style.display = 'none';
-                passwordError.style.display = 'none';
-                emailInput.style.borderColor = 'var(--input-border)';
-                passwordInput.style.borderColor = 'var(--input-border)';
-                
-                // Re-attach event listener to the new toggle link
-                document.getElementById('toggle-signup').addEventListener('click', function(e) {
-                    e.preventDefault();
-                    toggleLink.click();
-                });
-            });
-
-            // Toggle custom checkbox
-            customCheckbox.addEventListener('click', function() {
-                this.classList.toggle('checked');
-            });
-
-            // Validate email
-            function isValidEmail(email) {
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                return emailRegex.test(email);
-            }
-
-            // Form submission
-            loginForm.addEventListener('submit', async function(e) {
-                e.preventDefault();
-                let isValid = true;
-                
-                // Validate email
-                if (!isValidEmail(emailInput.value)) {
-                    emailError.style.display = 'block';
-                    emailInput.style.borderColor = 'var(--error-color)';
-                    isValid = false;
-                } else {
-                    emailError.style.display = 'none';
-                    emailInput.style.borderColor = 'var(--input-border)';
-                }
-                
-                // Validate password
-                if (passwordInput.value.length < 6) {
-                    passwordError.style.display = 'block';
-                    passwordInput.style.borderColor = 'var(--error-color)';
-                    isValid = false;
-                } else {
-                    passwordError.style.display = 'none';
-                    passwordInput.style.borderColor = 'var(--input-border)';
-                }
-                
-                if (isValid) {
-                    // Show loading state
-                    loginBtn.classList.add('loading');
-                    
-                    try {
-                        let result;
-                        
-                        if (isLoginMode) {
-                            // Login with Supabase
-                            result = await supabaseClient.auth.signInWithPassword({
-                                email: emailInput.value,
-                                password: passwordInput.value
-                            });
-                        } else {
-                            // Sign up with Supabase
-                            result = await supabaseClient.auth.signUp({
-                                email: emailInput.value,
-                                password: passwordInput.value
-                            });
-                        }
-                        
-                        // Handle the result
-                        if (result.error) {
-                            showToast(result.error.message, 'error');
-                        } else {
-                            if (isLoginMode) {
-                                showToast('Successfully logged in!', 'success');
-                                // Redirect to dashboard after 1 second
-                                setTimeout(() => {
-                                    // Replace with your dashboard URL
-                                    // window.location.href = '/dashboard';
-                                    alert('Login successful! Redirect to dashboard...');
-                                }, 1000);
-                            } else {
-                                showToast('Account created! Please check your email to confirm your account.', 'success');
-                                // Switch back to login mode
-                                setTimeout(() => {
-                                    toggleLink.click();
-                                }, 2000);
-                            }
-                        }
-                    } catch (err) {
-                        showToast('An error occurred. Please try again.', 'error');
-                        console.error('Authentication error:', err);
-                    } finally {
-                        loginBtn.classList.remove('loading');
-                    }
-                }
-            });
-
-            // Social login buttons
-            socialButtons.forEach(button => {
-                button.addEventListener('click', async function() {
-                    const provider = this.id.split('-')[0];
-                    showToast(`Attempting to log in with ${provider.charAt(0).toUpperCase() + provider.slice(1)}...`, 'success');
-                    
-                    try {
-                        let result;
-                        switch(provider) {
-                            case 'google':
-                                result = await supabaseClient.auth.signInWithOAuth({
-                                    provider: 'google'
-                                });
-                                break;
-                            case 'facebook':
-                                result = await supabaseClient.auth.signInWithOAuth({
-                                    provider: 'facebook'
-                                });
-                                break;
-                            case 'apple':
-                                result = await supabaseClient.auth.signInWithOAuth({
-                                    provider: 'apple'
-                                });
-                                break;
-                        }
-                        
-                        if (result.error) {
-                            showToast(result.error.message, 'error');
-                        }
-                        // The redirect will be handled by Supabase automatically
-                    } catch (err) {
-                        showToast('Social login failed. Please try again.', 'error');
-                        console.error('Social auth error:', err);
-                    }
-                });
-            });
-
-            // Input focus effects
-            const inputs = document.querySelectorAll('input');
-            inputs.forEach(input => {
-                input.addEventListener('focus', function() {
-                    this.parentElement.querySelector('label').style.color = 'var(--primary)';
-                });
-                
-                input.addEventListener('blur', function() {
-                    this.parentElement.querySelector('label').style.color = 'rgba(255, 255, 255, 0.573)';
-                });
-            });
-            
-            // Check if user is already logged in
-            async function checkUser() {
-                const { data, error } = await supabaseClient.auth.getSession();
-                if (data.session) {
-                    // User is logged in, redirect to dashboard
-                    // window.location.href = '/dashboard';
-                    alert('Already logged in! Redirect to dashboard...');
-                }
-            }
-            
-            // Check user status when page loads
-            checkUser();
-        });
-    </script>
+        </style>
 </body>
 </html>

@@ -4,11 +4,18 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+        
         {
             "type": "msedge",
             "request": "launch",
             "name": "Open learnmore.html",
             "file": "c:\\Users\\SS KNITS\\Desktop\\angler_website\\pages\\learnmore.html"
+        },
+        {
+            "type": "msedge",
+            "name": "http://127.0.0.1:3000/pages/login.html",
+            "request": "launch",
+            "url": "http://127.0.0.1:3000/pages/login.html"
         }
     ]
 }
