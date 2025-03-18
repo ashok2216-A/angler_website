@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supabase Authentication</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 400px;
+            width: 100%;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .tab.active {
+            background-color: #5e38f4;
+            color: white;
+        }
+        
+        .form-container {
+            padding: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border 0.3s ease;
+        }
+        
+        input:focus {
+            border-color: #5e38f4;
+            outline: none;
+        }
+        
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 6px;
+            background-color: #5e38f4;
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            background-color: #4928d6;
+        }
+        
+        .message {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 6px;
+            text-align: center;
+        }
+        
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="tabs">
+            <div class="tab active" id="signup-tab">Sign Up</div>
+            <div class="tab" id="login-tab">Log In</div>
+        </div>
+        
+        <div class="form-container">
+            <!-- Sign Up Form -->
+            <form id="signup-form">
+                <div class="form-group">
+                    <label for="signup-email">Email</label>
+                    <input type="email" id="signup-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-password">Password</label>
+                    <input type="password" id="signup-password" required minlength="6">
+                </div>
+                <button type="submit">Sign Up</button>
+                <div id="signup-message" class="message hidden"></div>
+            </form>
+            
+            <!-- Log In Form -->
+            <form id="login-form" class="hidden">
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <button type="submit">Log In</button>
+                <div id="login-message" class="message hidden"></div>
+            </form>
+            
+            <!-- User Profile (when logged in) -->
+            <div id="user-profile" class="hidden">
+                <h2>Welcome!</h2>
+                <p id="user-email"></p>
+                <button id="logout-button">Log Out</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Initialize Supabase client
+        const SUPABASE_URL = 'https://nlseukvysoshudzdvfzu.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5sc2V1a3Z5c29zaHVkemR2Znp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE4NDg0NjAsImV4cCI6MjA1NzQyNDQ2MH0.JlfPqzxbH2lHXqT3rARjN0YAvqUOHF2oGdvdsXfT_VY';
+        
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // Elements
+        const signupTab = document.getElementById('signup-tab');
+        const loginTab = document.getElementById('login-tab');
+        const signupForm = document.getElementById('signup-form');
+        const loginForm = document.getElementById('login-form');
+        const userProfile = document.getElementById('user-profile');
+        const userEmail = document.getElementById('user-email');
+        const logoutButton = document.getElementById('logout-button');
+        const signupMessage = document.getElementById('signup-message');
+        const loginMessage = document.getElementById('login-message');
+
+        // Switch between tabs
+        signupTab.addEventListener('click', () => {
+            signupTab.classList.add('active');
+            loginTab.classList.remove('active');
+            signupForm.classList.remove('hidden');
+            loginForm.classList.add('hidden');
+            userProfile.classList.add('hidden');
+            clearMessages();
+        });
+
+        loginTab.addEventListener('click', () => {
+            loginTab.classList.add('active');
+            signupTab.classList.remove('active');
+            loginForm.classList.remove('hidden');
+            signupForm.classList.add('hidden');
+            userProfile.classList.add('hidden');
+            clearMessages();
+        });
+
+        // Sign Up
+        signupForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+
+            try {
+                const { data, error } = await _supabase.auth.signUp({
+                    email: email,
+                    password: password
+                });
+
+                if (error) {
+                    showMessage(signupMessage, error.message, 'error');
+                } else {
+                    showMessage(signupMessage, 'Signup successful! Check your email for confirmation.', 'success');
+                    signupForm.reset();
+                }
+            } catch (err) {
+                showMessage(signupMessage, 'An error occurred. Please try again.', 'error');
+                console.error(err);
+            }
+        });
+
+        // Log In
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            try {
+                const { data, error } = await _supabase.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                });
+
+                if (error) {
+                    showMessage(loginMessage, error.message, 'error');
+                } else {
+                    showUserProfile(data.user);
+                    loginForm.reset();
+                }
+            } catch (err) {
+                showMessage(loginMessage, 'An error occurred. Please try again.', 'error');
+                console.error(err);
+            }
+        });
+
+        // Log Out
+        logoutButton.addEventListener('click', async () => {
+            try {
+                const { error } = await _supabase.auth.signOut();
+                if (error) {
+                    console.error('Error logging out:', error);
+                } else {
+                    showLoginForm();
+                }
+            } catch (err) {
+                console.error('Error logging out:', err);
+            }
+        });
+
+        // Helper functions
+        function showMessage(element, message, type) {
+            element.textContent = message;
+            element.className = `message ${type}`;
+            element.classList.remove('hidden');
+        }
+
+        function clearMessages() {
+            signupMessage.classList.add('hidden');
+            loginMessage.classList.add('hidden');
+        }
+
+        function showUserProfile(user) {
+            signupForm.classList.add('hidden');
+            loginForm.classList.add('hidden');
+            userProfile.classList.remove('hidden');
+            signupTab.classList.remove('active');
+            loginTab.classList.remove('active');
+            userEmail.textContent = `Logged in as: ${user.email}`;
+        }
+
+        function showLoginForm() {
+            userProfile.classList.add('hidden');
+            loginForm.classList.remove('hidden');
+            loginTab.classList.add('active');
+            signupTab.classList.remove('active');
+            signupForm.classList.add('hidden');
+        }
+
+        // Check if user is already logged in
+        window.addEventListener('DOMContentLoaded', async () => {
+            const { data, error } = await _supabase.auth.getSession();
+            if (data.session) {
+                showUserProfile(data.session.user);
+            }
+        });
+    </script>
+</body>
+</html>
