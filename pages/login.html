@@ -82,310 +82,315 @@
     <div class="toast" id="toast"></div>
 
     <!-- Supabase JS SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.36.0/dist/umd/supabase.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-    // Initialize Supabase client
-    const SUPABASE_URL = 'https://ndphubnkuzaurbkvoaqf.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kcGh1Ym5rdXphdXJia3ZvYXFmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIyNzcxNzgsImV4cCI6MjA1Nzg1MzE3OH0.Oi-q_OFbx7USAjWT8YU5pEo8HMuJ_N9hsxw9c22zx2k';
+            // Initialize Supabase client
+            const SUPABASE_URL = 'https://ndphubnkuzaurbkvoaqf.supabase.co';
+            const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kcGh1Ym5rdXphdXJia3ZvYXFmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIyNzcxNzgsImV4cCI6MjA1Nzg1MzE3OH0.Oi-q_OFbx7USAjWT8YU5pEo8HMuJ_N9hsxw9c22zx2k';
 
-    // Check if Supabase is loaded
-    if (typeof supabase === 'undefined') {
-        console.error('Supabase client not loaded. Please make sure to include the Supabase script.');
-        showToast('Authentication service not available', 'error');
-        return;
-    }
+            // Check if Supabase is loaded
+            if (typeof supabase === 'undefined') {
+                console.error('Supabase client not loaded. Please make sure to include the Supabase script.');
+                showToast('Authentication service not available', 'error');
+                return;
+            }
 
-    // Create the Supabase client
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+            // Create the Supabase client
+            const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // DOM elements
-    const loginForm = document.getElementById('loginForm');
-    const usernameInput = document.getElementById('username');
-    const usernameGroup = document.getElementById('username-group');
-    const usernameError = document.getElementById('username-error');
-    const emailInput = document.getElementById('email');
-    const passwordInput = document.getElementById('password');
-    const confirmPasswordInput = document.getElementById('confirm-password');
-    const confirmPasswordGroup = document.getElementById('confirm-password-group');
-    const confirmPasswordError = document.getElementById('confirm-password-error');
-    const emailError = document.getElementById('email-error');
-    const passwordError = document.getElementById('password-error');
-    const customCheckbox = document.getElementById('custom-checkbox');
-    const loginBtn = document.getElementById('login-btn');
-    const toast = document.getElementById('toast');
-    const socialButtons = document.querySelectorAll('.social-button');
+            // DOM elements
+            const loginForm = document.getElementById('loginForm');
+            const usernameInput = document.getElementById('username');
+            const usernameGroup = document.getElementById('username-group');
+            const usernameError = document.getElementById('username-error');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const confirmPasswordInput = document.getElementById('confirm-password');
+            const confirmPasswordGroup = document.getElementById('confirm-password-group');
+            const confirmPasswordError = document.getElementById('confirm-password-error');
+            const emailError = document.getElementById('email-error');
+            const passwordError = document.getElementById('password-error');
+            const customCheckbox = document.getElementById('custom-checkbox');
+            const loginBtn = document.getElementById('login-btn');
+            const toast = document.getElementById('toast');
+            const socialButtons = document.querySelectorAll('.social-button');
 
-    // Show toast notification
-    function showToast(message, type) {
-        const toast = document.getElementById('toast');
-        toast.textContent = message;
-        toast.className = `toast ${type}`;
-        toast.classList.add('show');
+            // Show toast notification
+            function showToast(message, type) {
+                const toast = document.getElementById('toast');
+                toast.textContent = message;
+                toast.className = `toast ${type}`;
+                toast.classList.add('show');
 
-        setTimeout(() => {
-            toast.classList.remove('show');
-        }, 3000);
-    }
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }
 
-    // Track current mode (login or signup)
-    let isLoginMode = true;
+            // Track current mode (login or signup)
+            let isLoginMode = true;
 
-    // Add signup toggle element
-    const container = document.querySelector('.container');
-    const signupToggle = document.createElement('div');
-    signupToggle.className = 'signup-toggle';
-    signupToggle.innerHTML = 'Don\'t have an account? <a href="#" id="toggle-signup">Sign up</a>';
-    signupToggle.style.marginTop = '20px';
-    signupToggle.style.textAlign = 'center';
-    signupToggle.style.color = 'rgba(255, 255, 255, 0.7)';
-    container.appendChild(signupToggle);
-
-    const toggleLink = document.getElementById('toggle-signup');
-    const welcomeHeading = document.querySelector('h1');
-
-    // Toggle between login and signup modes
-    toggleLink.addEventListener('click', function (e) {
-        e.preventDefault();
-        isLoginMode = !isLoginMode;
-
-        if (isLoginMode) {
-            welcomeHeading.textContent = 'Welcome Back';
-            loginBtn.querySelector('.btn-text').textContent = 'Sign In';
-            toggleLink.textContent = 'Sign up';
+            // Add signup toggle element
+            const container = document.querySelector('.container');
+            const signupToggle = document.createElement('div');
+            signupToggle.className = 'signup-toggle';
             signupToggle.innerHTML = 'Don\'t have an account? <a href="#" id="toggle-signup">Sign up</a>';
+            signupToggle.style.marginTop = '20px';
+            signupToggle.style.textAlign = 'center';
+            signupToggle.style.color = 'rgba(255, 255, 255, 0.7)';
+            container.appendChild(signupToggle);
 
-            // Hide signup-only fields
-            usernameGroup.style.display = 'none';
-            confirmPasswordGroup.style.display = 'none';
-        } else {
-            welcomeHeading.textContent = 'Create Account';
-            loginBtn.querySelector('.btn-text').textContent = 'Sign Up';
-            toggleLink.textContent = 'Sign in';
-            signupToggle.innerHTML = 'Already have an account? <a href="#" id="toggle-signup">Sign in</a>';
+            const toggleLink = document.getElementById('toggle-signup');
+            const welcomeHeading = document.querySelector('h1');
 
-            // Show signup-only fields
-            usernameGroup.style.display = 'block';
-            confirmPasswordGroup.style.display = 'block';
-        }
-
-        // Reset form state
-        emailError.style.display = 'none';
-        passwordError.style.display = 'none';
-        usernameError.style.display = 'none';
-        confirmPasswordError.style.display = 'none';
-        emailInput.style.borderColor = 'var(--input-border)';
-        passwordInput.style.borderColor = 'var(--input-border)';
-        usernameInput.style.borderColor = 'var(--input-border)';
-        confirmPasswordInput.style.borderColor = 'var(--input-border)';
-
-        // Re-attach event listener to the new toggle link
-        document.getElementById('toggle-signup').addEventListener('click', function (e) {
-            e.preventDefault();
-            toggleLink.click();
-        });
-    });
-
-    // Toggle custom checkbox
-    customCheckbox.addEventListener('click', function () {
-        this.classList.toggle('checked');
-    });
-
-    // Validate email
-    function isValidEmail(email) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
-    }
-
-    // Form submission
-    loginForm.addEventListener('submit', async function (e) {
-        e.preventDefault();
-        let isValid = true;
-
-        // Validate email
-        if (!isValidEmail(emailInput.value)) {
-            emailError.style.display = 'block';
-            emailInput.style.borderColor = 'var(--error-color)';
-            isValid = false;
-        } else {
-            emailError.style.display = 'none';
-            emailInput.style.borderColor = 'var(--input-border)';
-        }
-
-        // Validate password
-        if (passwordInput.value.length < 6) {
-            passwordError.style.display = 'block';
-            passwordInput.style.borderColor = 'var(--error-color)';
-            isValid = false;
-        } else {
-            passwordError.style.display = 'none';
-            passwordInput.style.borderColor = 'var(--input-border)';
-        }
-
-        // Additional validations for signup mode
-        if (!isLoginMode) {
-            // Validate username
-            if (usernameInput.value.length < 3) {
-                usernameError.style.display = 'block';
-                usernameInput.style.borderColor = 'var(--error-color)';
-                isValid = false;
-            } else {
-                usernameError.style.display = 'none';
-                usernameInput.style.borderColor = 'var(--input-border)';
-            }
-
-            // Validate confirm password
-            if (confirmPasswordInput.value !== passwordInput.value) {
-                confirmPasswordError.style.display = 'block';
-                confirmPasswordInput.style.borderColor = 'var(--error-color)';
-                isValid = false;
-            } else {
-                confirmPasswordError.style.display = 'none';
-                confirmPasswordInput.style.borderColor = 'var(--input-border)';
-            }
-        }
-
-        if (isValid) {
-            // Show loading state
-            loginBtn.classList.add('loading');
-
-            try {
-                let result;
+            // Toggle between login and signup modes
+            toggleLink.addEventListener('click', function (e) {
+                e.preventDefault();
+                isLoginMode = !isLoginMode;
 
                 if (isLoginMode) {
-                    // Login with Supabase
-                    result = await supabaseClient.auth.signInWithPassword({
-                        email: emailInput.value,
-                        password: passwordInput.value
-                    });
+                    welcomeHeading.textContent = 'Welcome Back';
+                    loginBtn.querySelector('.btn-text').textContent = 'Sign In';
+                    toggleLink.textContent = 'Sign up';
+                    signupToggle.innerHTML = 'Don\'t have an account? <a href="#" id="toggle-signup">Sign up</a>';
+
+                    // Hide signup-only fields
+                    usernameGroup.style.display = 'none';
+                    confirmPasswordGroup.style.display = 'none';
                 } else {
-                    // Sign up with Supabase
-                    result = await supabaseClient.auth.signUp({
-                        email: emailInput.value,
-                        password: passwordInput.value,
-                        options: {
-                            data: {
-                                username: usernameInput.value, // Store username
-                                display_name: usernameInput.value // Store display name
-                            }
-                        }
-                    });
+                    welcomeHeading.textContent = 'Create Account';
+                    loginBtn.querySelector('.btn-text').textContent = 'Sign Up';
+                    toggleLink.textContent = 'Sign in';
+                    signupToggle.innerHTML = 'Already have an account? <a href="#" id="toggle-signup">Sign in</a>';
+
+                    // Show signup-only fields
+                    usernameGroup.style.display = 'block';
+                    confirmPasswordGroup.style.display = 'block';
                 }
 
-                // Handle the result
-                if (result.error) {
-                    showToast(result.error.message, 'error');
+                // Reset form state
+                emailError.style.display = 'none';
+                passwordError.style.display = 'none';
+                usernameError.style.display = 'none';
+                confirmPasswordError.style.display = 'none';
+                emailInput.style.borderColor = 'var(--input-border)';
+                passwordInput.style.borderColor = 'var(--input-border)';
+                usernameInput.style.borderColor = 'var(--input-border)';
+                confirmPasswordInput.style.borderColor = 'var(--input-border)';
+
+                // Re-attach event listener to the new toggle link
+                document.getElementById('toggle-signup').addEventListener('click', function (e) {
+                    e.preventDefault();
+                    toggleLink.click();
+                });
+            });
+
+            // Toggle custom checkbox
+            customCheckbox.addEventListener('click', function () {
+                this.classList.toggle('checked');
+            });
+
+            // Validate email
+            function isValidEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+
+            // Form submission
+            loginForm.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                let isValid = true;
+
+                // Validate email
+                if (!isValidEmail(emailInput.value)) {
+                    emailError.style.display = 'block';
+                    emailInput.style.borderColor = 'var(--error-color)';
+                    isValid = false;
                 } else {
-                    if (isLoginMode) {
-                        showToast('Successfully logged in!', 'success');
-                        // Redirect to dashboard after 1 second
-                        setTimeout(() => {
-                            // Replace with your dashboard URL
-                            // window.location.href = '/dashboard';
-                            alert('Login successful! Redirect to dashboard...');
-                        }, 1000);
+                    emailError.style.display = 'none';
+                    emailInput.style.borderColor = 'var(--input-border)';
+                }
+
+                // Validate password
+                if (passwordInput.value.length < 6) {
+                    passwordError.style.display = 'block';
+                    passwordInput.style.borderColor = 'var(--error-color)';
+                    isValid = false;
+                } else {
+                    passwordError.style.display = 'none';
+                    passwordInput.style.borderColor = 'var(--input-border)';
+                }
+
+                // Additional validations for signup mode
+                if (!isLoginMode) {
+                    // Validate username
+                    if (usernameInput.value.length < 3) {
+                        usernameError.style.display = 'block';
+                        usernameInput.style.borderColor = 'var(--error-color)';
+                        isValid = false;
                     } else {
-                        showToast('Account created! Please check your email to confirm your account.', 'success');
-                        // Switch back to login mode
-                        setTimeout(() => {
-                            toggleLink.click();
-                        }, 2000);
+                        usernameError.style.display = 'none';
+                        usernameInput.style.borderColor = 'var(--input-border)';
+                    }
+
+                    // Validate confirm password
+                    if (confirmPasswordInput.value !== passwordInput.value) {
+                        confirmPasswordError.style.display = 'block';
+                        confirmPasswordInput.style.borderColor = 'var(--error-color)';
+                        isValid = false;
+                    } else {
+                        confirmPasswordError.style.display = 'none';
+                        confirmPasswordInput.style.borderColor = 'var(--input-border)';
                     }
                 }
-            } catch (err) {
-                showToast('An error occurred. Please try again.', 'error');
-                console.error('Authentication error:', err);
-            } finally {
-                loginBtn.classList.remove('loading');
-            }
-        }
-    });
 
-    // Function to update display name
-    async function updateDisplayName(newDisplayName) {
-        const { data, error } = await supabaseClient.auth.updateUser({
-            data: {
-                display_name: newDisplayName
-            }
-        });
+                if (isValid) {
+                    // Show loading state
+                    loginBtn.classList.add('loading');
 
-        if (error) {
-            showToast('Error updating display name', 'error');
-            console.error('Error updating user:', error.message);
-        } else {
-            showToast('Display name updated successfully', 'success');
-            console.log('User updated successfully:', data);
-        }
-    }
+                    try {
+                        let result;
 
-    // Example: Update display name on button click
-    document.getElementById('update-display-name-btn')?.addEventListener('click', async function () {
-        const newDisplayName = document.getElementById('new-display-name').value;
-        await updateDisplayName(newDisplayName);
-    });
+                        if (isLoginMode) {
+                            // Login with Supabase using your approach
+                            const { data, error } = await supabaseClient.auth.signInWithPassword({
+                                email: emailInput.value,
+                                password: passwordInput.value,
+                            });
+                            
+                            result = { data, error };
+                        } else {
+                            // Sign up with Supabase
+                            result = await supabaseClient.auth.signUp({
+                                email: emailInput.value,
+                                password: passwordInput.value,
+                                options: {
+                                    data: {
+                                        username: usernameInput.value,
+                                        display_name: usernameInput.value
+                                    }
+                                }
+                            });
+                        }
 
-    // Social login buttons
-    socialButtons.forEach(button => {
-        button.addEventListener('click', async function () {
-            const provider = this.id.split('-')[0];
-            showToast(`Attempting to log in with ${provider.charAt(0).toUpperCase() + provider.slice(1)}...`, 'success');
-
-            try {
-                let result;
-                switch (provider) {
-                    case 'google':
-                        result = await supabaseClient.auth.signInWithOAuth({
-                            provider: 'google'
-                        });
-                        break;
-                    case 'facebook':
-                        result = await supabaseClient.auth.signInWithOAuth({
-                            provider: 'facebook'
-                        });
-                        break;
-                    case 'apple':
-                        result = await supabaseClient.auth.signInWithOAuth({
-                            provider: 'apple'
-                        });
-                        break;
+                        // Handle the result
+                        if (result.error) {
+                            showToast(result.error.message, 'error');
+                            console.error('Sign-in Error:', result.error);
+                        } else {
+                            if (isLoginMode) {
+                                showToast('Successfully logged in!', 'success');
+                                console.log('Signed-in User:', result.data.user);
+                                
+                                // Redirect to dashboard after 1 second
+                                setTimeout(() => {
+                                    // Replace with your dashboard URL
+                                    // window.location.href = '/dashboard';
+                                    alert('Login successful! Redirect to dashboard...');
+                                }, 1000);
+                            } else {
+                                showToast('Account created! Please check your email to confirm your account.', 'success');
+                                // Switch back to login mode
+                                setTimeout(() => {
+                                    toggleLink.click();
+                                }, 2000);
+                            }
+                        }
+                    } catch (err) {
+                        showToast('An error occurred. Please try again.', 'error');
+                        console.error('Authentication error:', err);
+                    } finally {
+                        loginBtn.classList.remove('loading');
+                    }
                 }
+            });
 
-                if (result.error) {
-                    showToast(result.error.message, 'error');
+            // Function to update display name
+            async function updateDisplayName(newDisplayName) {
+                const { data, error } = await supabaseClient.auth.updateUser({
+                    data: {
+                        display_name: newDisplayName
+                    }
+                });
+
+                if (error) {
+                    showToast('Error updating display name', 'error');
+                    console.error('Error updating user:', error.message);
+                } else {
+                    showToast('Display name updated successfully', 'success');
+                    console.log('User updated successfully:', data);
                 }
-                // The redirect will be handled by Supabase automatically
-            } catch (err) {
-                showToast('Social login failed. Please try again.', 'error');
-                console.error('Social auth error:', err);
             }
+
+            // Example: Update display name on button click
+            document.getElementById('update-display-name-btn')?.addEventListener('click', async function () {
+                const newDisplayName = document.getElementById('new-display-name').value;
+                await updateDisplayName(newDisplayName);
+            });
+
+            // Social login buttons
+            socialButtons.forEach(button => {
+                button.addEventListener('click', async function () {
+                    const provider = this.id.split('-')[0];
+                    showToast(`Attempting to log in with ${provider.charAt(0).toUpperCase() + provider.slice(1)}...`, 'success');
+
+                    try {
+                        let result;
+                        switch (provider) {
+                            case 'google':
+                                result = await supabaseClient.auth.signInWithOAuth({
+                                    provider: 'google'
+                                });
+                                break;
+                            case 'facebook':
+                                result = await supabaseClient.auth.signInWithOAuth({
+                                    provider: 'facebook'
+                                });
+                                break;
+                            case 'apple':
+                                result = await supabaseClient.auth.signInWithOAuth({
+                                    provider: 'apple'
+                                });
+                                break;
+                        }
+
+                        if (result.error) {
+                            showToast(result.error.message, 'error');
+                        }
+                        // The redirect will be handled by Supabase automatically
+                    } catch (err) {
+                        showToast('Social login failed. Please try again.', 'error');
+                        console.error('Social auth error:', err);
+                    }
+                });
+            });
+
+            // Input focus effects
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.addEventListener('focus', function () {
+                    this.parentElement.querySelector('label').style.color = 'var(--primary)';
+                });
+
+                input.addEventListener('blur', function () {
+                    this.parentElement.querySelector('label').style.color = 'rgba(255, 255, 255, 0.573)';
+                });
+            });
+
+            // Check if user is already logged in
+            async function checkUser() {
+                const { data, error } = await supabaseClient.auth.getSession();
+                if (data.session) {
+                    // User is logged in, redirect to dashboard
+                    // window.location.href = '/dashboard';
+                    alert('Already logged in! Redirect to dashboard...');
+                }
+            }
+
+            // Check user status when page loads
+            checkUser();
         });
-    });
-
-    // Input focus effects
-    const inputs = document.querySelectorAll('input');
-    inputs.forEach(input => {
-        input.addEventListener('focus', function () {
-            this.parentElement.querySelector('label').style.color = 'var(--primary)';
-        });
-
-        input.addEventListener('blur', function () {
-            this.parentElement.querySelector('label').style.color = 'rgba(255, 255, 255, 0.573)';
-        });
-    });
-
-    // Check if user is already logged in
-    async function checkUser() {
-        const { data, error } = await supabaseClient.auth.getSession();
-        if (data.session) {
-            // User is logged in, redirect to dashboard
-            // window.location.href = '/dashboard';
-            alert('Already logged in! Redirect to dashboard...');
-        }
-    }
-
-    // Check user status when page loads
-    checkUser();
-});
     </script>
     <style>
         /* All existing CSS remains the same */
