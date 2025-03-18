@@ -405,7 +405,7 @@
             const { data, error } = await supabaseClient.auth.getSession();
             if (data && data.session) {
                 // User is logged in, redirect to dashboard
-                window.location.href = '/dashboard.html';
+                // window.location.href = '/dashboard.html';
             }
         } catch (error) {
             console.error('Error checking session:', error);
