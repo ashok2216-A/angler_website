@@ -604,8 +604,12 @@
 
                 // Handle the result
                 if (result.error) {
-                    showToast('Authentication Error: User already registered!');
+                    showToast(result.error.message, 'error');
                     console.error('Authentication Error:', result.error);
+                    function showToast(message, type) {
+                    console.log('Toast Message:', message); // Debug log
+                    alert(`${type.toUpperCase()}: ${message}`);
+                }
                 } else {
                     if (isLoginMode) {
                         showToast('Successfully logged in!', 'success');
