@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf/notyf.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/notyf/notyf.min.js"></script>
     <title>Modern Login Page</title>
 </head>
 <body>
@@ -603,16 +605,20 @@
                 }
 
                 // Handle the result
+                // Initialize Notyf instance
+                const notyf = new Notyf({
+                    position: {
+                            x: 'center', // Horizontal position: center
+                            y: 'bottom'  // Vertical position: center
+                        }});
+
+                // Handle the result
                 if (result.error) {
-                    showToast(result.error.message, 'error');
+                    notyf.error(result.error.message || 'An unexpected error occurred.');
                     console.error('Authentication Error:', result.error);
-                    function showToast(message, type) {
-                    console.log('Toast Message:', message); // Debug log
-                    alert(`${type.toUpperCase()}: ${message}`);
-                }
                 } else {
                     if (isLoginMode) {
-                        showToast('Successfully logged in!', 'success');
+                        notyf.success('Successfully logged in!');
                         console.log('Signed-in User:', result.data.user);
                         
                         // Redirect to dashboard after 1 second
@@ -620,21 +626,23 @@
                             // window.location.href = '/dashboard';
                         }, 1000);
                     } else {
-                        showToast('Account created! Please check your email to confirm your account.', 'success');
+                        notyf.success('Account created! Please check your email to confirm your account.');
+                        
                         // Switch back to login mode
                         setTimeout(() => {
                             toggleMode();
                         }, 2000);
                     }
                 }
-            } catch (err) {
-                showToast('An error occurred. Please try again.', 'error');
-                console.error('Authentication error:', err);
-            } finally {
-                loginBtn.classList.remove('loading');
+                } catch (err) {
+                    notyf.error('An error occurred. Please try again.');
+                    console.error('Authentication error:', err);
+                } finally {
+                    loginBtn.classList.remove('loading');
+                }
             }
-        }
-    });
+        });
+
 
     // Social login buttons
     socialButtons.forEach(button => {
