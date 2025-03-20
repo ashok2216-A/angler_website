@@ -604,7 +604,7 @@
 
                 // Handle the result
                 if (result.error) {
-                    showToast(result.error.message, 'error');
+                    showToast('Authentication Error: User already registered!');
                     console.error('Authentication Error:', result.error);
                 } else {
                     if (isLoginMode) {
