@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf/notyf.min.css">
-<!--     <script src="https://cdn.jsdelivr.net/npm/notyf/notyf.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/notyf/notyf.min.js"></script>
     <title>Modern Login Page</title>
 </head>
 <body>
@@ -12,7 +12,7 @@
         <a href="#" class="logo">
             Angler
         </a>
-        <h1>Welcome Back</h1>
+        <h1 id="page-title">Welcome Back</h1>
         <form id="loginForm">
             <!-- Username field - hidden by default for login mode -->
             <div class="form-group" id="username-group" style="display: none;">
@@ -27,7 +27,7 @@
                 <div class="error" id="email-error">Please enter a valid email address</div>
             </div>
             
-            <div class="form-group">
+            <div class="form-group" id="password-group">
                 <label for="password">Password</label>
                 <input type="password" id="password" placeholder="Enter your password">
                 <div class="error" id="password-error">Password must be at least 6 characters</div>
@@ -45,7 +45,7 @@
                     <div class="custom-checkbox" id="custom-checkbox"></div>
                     <label for="remember">Remember me</label>
                 </div>
-                <a href="#" class="forgot-password">Forgot Password?</a>
+                <a href="#" class="forgot-password" id="forgot-password-link">Forgot Password?</a>
             </div>
             <button type="submit" class="btn" id="login-btn">
                 <span class="btn-text">Sign In</span>
@@ -300,6 +300,18 @@
             visibility: hidden;
         }
 
+        /* Back button for forgot password */
+        .back-button {
+            margin-top: 15px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+        }
+        
+        .back-button:hover {
+            text-decoration: underline;
+        }
+
 
         /* Hide spinner by default */
         .btn .spinner {
@@ -412,13 +424,25 @@
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kcGh1Ym5rdXphdXJia3ZvYXFmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIyNzcxNzgsImV4cCI6MjA1Nzg1MzE3OH0.Oi-q_OFbx7USAjWT8YU5pEo8HMuJ_N9hsxw9c22zx2k';
     let supabaseClient;
 
+    // Initialize Notyf
+    const notyf = new Notyf({
+        position: {
+            x: 'center',
+            y: 'top'
+        },
+        duration: 3000,
+        ripple: true
+    });
+
     // DOM elements
     const loginForm = document.getElementById('loginForm');
+    const pageTitle = document.getElementById('page-title');
     const usernameInput = document.getElementById('username');
     const usernameGroup = document.getElementById('username-group');
     const usernameError = document.getElementById('username-error');
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
+    const passwordGroup = document.getElementById('password-group');
     const confirmPasswordInput = document.getElementById('confirm-password');
     const confirmPasswordGroup = document.getElementById('confirm-password-group');
     const confirmPasswordError = document.getElementById('confirm-password-error');
@@ -426,37 +450,9 @@
     const passwordError = document.getElementById('password-error');
     const customCheckbox = document.getElementById('custom-checkbox');
     const loginBtn = document.getElementById('login-btn');
+    const forgotPasswordLink = document.getElementById('forgot-password-link');
     const toast = document.getElementById('toast');
     const socialButtons = document.querySelectorAll('.social-button');
-
-    // Show toast notification
-    function showToast(message, type) {
-        const toast = document.getElementById('toast');
-        toast.textContent = message;
-        toast.className = `toast ${type}`;
-        toast.classList.add('show');
-
-        setTimeout(() => {
-            toast.classList.remove('show');
-        }, 3000);
-    }
-
-    // Try to initialize Supabase client
-    try {
-        if (typeof supabase === 'undefined') {
-            throw new Error('Supabase client not loaded');
-        }
-        supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-    } catch (error) {
-        console.error('Failed to initialize Supabase client:', error);
-        // Delay the toast to ensure DOM is fully loaded
-        setTimeout(() => {
-            showToast('Authentication service not available. Please try again later.', 'error');
-        }, 500);
-    }
-
-    // Track current mode (login or signup)
-    let isLoginMode = true;
 
     // Add signup toggle element
     const container = document.querySelector('.container');
@@ -468,33 +464,108 @@
     signupToggle.style.color = 'rgba(255, 255, 255, 0.7)';
     container.appendChild(signupToggle);
 
-    const toggleLink = document.getElementById('toggle-signup');
-    const welcomeHeading = document.querySelector('h1');
+    // Track current mode (login, signup, or forgotPassword)
+    let currentMode = 'login';
 
-    // Toggle between login and signup modes
-    function toggleMode(e) {
-        if (e) e.preventDefault();
-        isLoginMode = !isLoginMode;
+    // Try to initialize Supabase client
+    try {
+        if (typeof supabase === 'undefined') {
+            throw new Error('Supabase client not loaded');
+        }
+        supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    } catch (error) {
+        console.error('Failed to initialize Supabase client:', error);
+        // Delay the toast to ensure DOM is fully loaded
+        setTimeout(() => {
+            notyf.error('Authentication service not available. Please try again later.');
+        }, 500);
+    }
 
-        if (isLoginMode) {
-            welcomeHeading.textContent = 'Welcome Back';
-            loginBtn.querySelector('.btn-text').textContent = 'Sign In';
-            signupToggle.innerHTML = 'Don\'t have an account? <a href="#" id="toggle-signup">Sign up</a>';
-
-            // Hide signup-only fields
-            usernameGroup.style.display = 'none';
-            confirmPasswordGroup.style.display = 'none';
+    // Show toast notification
+    function showToast(message, type) {
+        if (type === 'success') {
+            notyf.success(message);
         } else {
-            welcomeHeading.textContent = 'Create Account';
-            loginBtn.querySelector('.btn-text').textContent = 'Sign Up';
-            signupToggle.innerHTML = 'Already have an account? <a href="#" id="toggle-signup">Sign in</a>';
+            notyf.error(message);
+        }
+    }
 
-            // Show signup-only fields
+    // Switch to Forgot Password mode
+    forgotPasswordLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        switchToForgotPasswordMode();
+    });
+
+    // Function to switch to forgot password mode
+    function switchToForgotPasswordMode() {
+        currentMode = 'forgotPassword';
+        pageTitle.textContent = 'Reset Password';
+        passwordGroup.style.display = 'none';
+        usernameGroup.style.display = 'none';
+        confirmPasswordGroup.style.display = 'none';
+        document.querySelector('.remember-forgot').style.display = 'none';
+        loginBtn.querySelector('.btn-text').textContent = 'Send Reset Link';
+        signupToggle.style.display = 'none';
+        
+        // Add back button
+        if (!document.querySelector('.back-button')) {
+            const backButton = document.createElement('div');
+            backButton.className = 'back-button';
+            backButton.textContent = '← Back to Login';
+            backButton.addEventListener('click', function() {
+                switchToLoginMode();
+            });
+            container.appendChild(backButton);
+        }
+    }
+
+    // Function to switch to login mode
+    function switchToLoginMode() {
+        currentMode = 'login';
+        pageTitle.textContent = 'Welcome Back';
+        passwordGroup.style.display = 'block';
+        document.querySelector('.remember-forgot').style.display = 'flex';
+        loginBtn.querySelector('.btn-text').textContent = 'Sign In';
+        signupToggle.style.display = 'block';
+        signupToggle.innerHTML = 'Don\'t have an account? <a href="#" id="toggle-signup">Sign up</a>';
+        
+        // Reattach event listener
+        document.getElementById('toggle-signup').addEventListener('click', toggleSignupMode);
+        
+        // Remove back button if it exists
+        const backButton = document.querySelector('.back-button');
+        if (backButton) {
+            backButton.remove();
+        }
+        
+        // Reset errors
+        resetFormErrors();
+    }
+
+    // Function to switch to signup mode
+    function toggleSignupMode(e) {
+        if (e) e.preventDefault();
+        
+        if (currentMode === 'login') {
+            currentMode = 'signup';
+            pageTitle.textContent = 'Create Account';
             usernameGroup.style.display = 'block';
             confirmPasswordGroup.style.display = 'block';
+            loginBtn.querySelector('.btn-text').textContent = 'Sign Up';
+            signupToggle.innerHTML = 'Already have an account? <a href="#" id="toggle-signup">Sign in</a>';
+        } else {
+            switchToLoginMode();
         }
+        
+        // Reset errors
+        resetFormErrors();
+        
+        // Reattach event listener to the toggle link
+        document.getElementById('toggle-signup').addEventListener('click', toggleSignupMode);
+    }
 
-        // Reset form state
+    // Reset form validation errors
+    function resetFormErrors() {
         emailError.style.display = 'none';
         passwordError.style.display = 'none';
         usernameError.style.display = 'none';
@@ -503,13 +574,10 @@
         passwordInput.style.borderColor = 'var(--input-border)';
         usernameInput.style.borderColor = 'var(--input-border)';
         confirmPasswordInput.style.borderColor = 'var(--input-border)';
-
-        // Re-attach event listener to the new toggle link
-        document.getElementById('toggle-signup').addEventListener('click', toggleMode);
     }
 
-    // Initial toggle link setup
-    toggleLink.addEventListener('click', toggleMode);
+    // Initialize the toggle signup button
+    document.getElementById('toggle-signup').addEventListener('click', toggleSignupMode);
 
     // Toggle custom checkbox
     customCheckbox.addEventListener('click', function () {
@@ -534,7 +602,7 @@
         
         let isValid = true;
 
-        // Validate email
+        // Validate email for all modes
         if (!isValidEmail(emailInput.value)) {
             emailError.style.display = 'block';
             emailInput.style.borderColor = 'var(--error-color)';
@@ -544,18 +612,28 @@
             emailInput.style.borderColor = 'var(--input-border)';
         }
 
-        // Validate password
-        if (passwordInput.value.length < 6) {
-            passwordError.style.display = 'block';
-            passwordInput.style.borderColor = 'var(--error-color)';
-            isValid = false;
-        } else {
-            passwordError.style.display = 'none';
-            passwordInput.style.borderColor = 'var(--input-border)';
-        }
-
-        // Additional validations for signup mode
-        if (!isLoginMode) {
+        // Additional validations based on current mode
+        if (currentMode === 'login') {
+            // Validate password for login
+            if (passwordInput.value.length < 6) {
+                passwordError.style.display = 'block';
+                passwordInput.style.borderColor = 'var(--error-color)';
+                isValid = false;
+            } else {
+                passwordError.style.display = 'none';
+                passwordInput.style.borderColor = 'var(--input-border)';
+            }
+        } else if (currentMode === 'signup') {
+            // Validate password for signup
+            if (passwordInput.value.length < 6) {
+                passwordError.style.display = 'block';
+                passwordInput.style.borderColor = 'var(--error-color)';
+                isValid = false;
+            } else {
+                passwordError.style.display = 'none';
+                passwordInput.style.borderColor = 'var(--input-border)';
+            }
+            
             // Validate username
             if (usernameInput.value.length < 3) {
                 usernameError.style.display = 'block';
@@ -576,6 +654,7 @@
                 confirmPasswordInput.style.borderColor = 'var(--input-border)';
             }
         }
+        // For forgot password mode, only email validation is needed which is already done
 
         if (isValid) {
             // Show loading state
@@ -584,13 +663,24 @@
             try {
                 let result;
 
-                if (isLoginMode) {
+                if (currentMode === 'login') {
                     // Login with Supabase
                     result = await supabaseClient.auth.signInWithPassword({
                         email: emailInput.value,
                         password: passwordInput.value,
                     });
-                } else {
+                    
+                    if (result.error) {
+                        showToast(result.error.message || 'Login failed. Please check your credentials.', 'error');
+                    } else {
+                        showToast('Successfully logged in!', 'success');
+                        
+                        // Redirect to dashboard after 1 second
+                        setTimeout(() => {
+                            // window.location.href = '/dashboard';
+                        }, 1000);
+                    }
+                } else if (currentMode === 'signup') {
                     // Sign up with Supabase
                     result = await supabaseClient.auth.signUp({
                         email: emailInput.value,
@@ -602,46 +692,42 @@
                             }
                         }
                     });
-                }
-
-                // Handle the result
-                // Initialize Notyf instance
-                const notyf = new Notyf({
-                    position: {
-                            x: 'center', // Horizontal position: center
-                            y: 'top'  // Vertical position: center
-                        }});
-
-                // Handle the result
-                if (result.error) {
-                    notyf.error(result.error.message || 'An unexpected error occurred.');
-                    console.error('Authentication Error:', result.error);
-                } else {
-                    if (isLoginMode) {
-                        notyf.success('Successfully logged in!');
-                        console.log('Signed-in User:', result.data.user);
-                        
-                        // Redirect to dashboard after 1 second
-                        setTimeout(() => {
-                            // window.location.href = '/dashboard';
-                        }, 1000);
+                    
+                    if (result.error) {
+                        showToast(result.error.message || 'Sign up failed. Please try again.', 'error');
                     } else {
-                        notyf.success('Account created! Please check your email to confirm your account.');
+                        showToast('Account created! Please check your email to confirm your account.', 'success');
                         
                         // Switch back to login mode
                         setTimeout(() => {
-                            toggleMode();
+                            switchToLoginMode();
+                        }, 2000);
+                    }
+                } else if (currentMode === 'forgotPassword') {
+                    // Forgot password with Supabase
+                    result = await supabaseClient.auth.resetPasswordForEmail(emailInput.value, {
+                        redirectTo: window.location.origin + '/reset-password',
+                    });
+                    
+                    if (result.error) {
+                        showToast(result.error.message || 'Failed to send reset email. Please try again.', 'error');
+                    } else {
+                        showToast('Password reset email sent. Please check your inbox.', 'success');
+                        
+                        // Switch back to login mode
+                        setTimeout(() => {
+                            switchToLoginMode();
                         }, 2000);
                     }
                 }
-                } catch (err) {
-                    notyf.error('An error occurred. Please try again.');
-                    console.error('Authentication error:', err);
-                } finally {
-                    loginBtn.classList.remove('loading');
-                }
+            } catch (err) {
+                console.error('Authentication error:', err);
+                showToast('An error occurred. Please try again.', 'error');
+            } finally {
+                loginBtn.classList.remove('loading');
             }
-        });
+        }
+    });
 
 
     // Social login buttons
