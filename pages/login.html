@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf/notyf.min.css">
     <script src="https://cdn.jsdelivr.net/npm/notyf/notyf.min.js"></script>
-    <title>Modern Login Page</title>
+    <title>Login to Angler</title>
 </head>
 <body>
     <div class="container">
@@ -520,49 +520,57 @@
     }
 
     // Function to switch to login mode
-    function switchToLoginMode() {
-        currentMode = 'login';
-        pageTitle.textContent = 'Welcome Back';
-        passwordGroup.style.display = 'block';
-        document.querySelector('.remember-forgot').style.display = 'flex';
-        loginBtn.querySelector('.btn-text').textContent = 'Sign In';
-        signupToggle.style.display = 'block';
-        signupToggle.innerHTML = 'Don\'t have an account? <a href="#" id="toggle-signup">Sign up</a>';
-        
-        // Reattach event listener
-        document.getElementById('toggle-signup').addEventListener('click', toggleSignupMode);
-        
-        // Remove back button if it exists
-        const backButton = document.querySelector('.back-button');
-        if (backButton) {
-            backButton.remove();
-        }
-        
-        // Reset errors
-        resetFormErrors();
+function switchToLoginMode() {
+    currentMode = 'login';
+    pageTitle.textContent = 'Welcome Back';
+    passwordGroup.style.display = 'block';
+    document.querySelector('.remember-forgot').style.display = 'flex';
+    loginBtn.querySelector('.btn-text').textContent = 'Sign In';
+
+    // Update innerHTML and re-attach event listener
+    signupToggle.style.display = 'block';
+    signupToggle.innerHTML = 'Don\'t have an account? <a href="#" id="toggle-signup">Sign up</a>';
+    document.getElementById('toggle-signup').addEventListener('click', toggleSignupMode);
+
+    // Remove back button if it exists
+    const backButton = document.querySelector('.back-button');
+    if (backButton) {
+        backButton.remove();
     }
 
-    // Function to switch to signup mode
-    function toggleSignupMode(e) {
-        if (e) e.preventDefault();
-        
-        if (currentMode === 'login') {
-            currentMode = 'signup';
-            pageTitle.textContent = 'Create Account';
-            usernameGroup.style.display = 'block';
-            confirmPasswordGroup.style.display = 'block';
-            loginBtn.querySelector('.btn-text').textContent = 'Sign Up';
-            signupToggle.innerHTML = 'Already have an account? <a href="#" id="toggle-signup">Sign in</a>';
-        } else {
-            switchToLoginMode();
-        }
-        
-        // Reset errors
-        resetFormErrors();
-        
-        // Reattach event listener to the toggle link
+    // Reset errors
+    resetFormErrors();
+
+    // Hide fields specific to signup mode
+    if (usernameGroup) usernameGroup.style.display = 'none';
+    if (confirmPasswordGroup) confirmPasswordGroup.style.display = 'none';
+}
+
+// Function to switch to signup mode
+function toggleSignupMode(e) {
+    if (e) e.preventDefault();
+
+    if (currentMode === 'login') {
+        currentMode = 'signup';
+        pageTitle.textContent = 'Create Account';
+
+        // Display fields specific to signup mode
+        if (usernameGroup) usernameGroup.style.display = 'block';
+        if (confirmPasswordGroup) confirmPasswordGroup.style.display = 'block';
+
+        loginBtn.querySelector('.btn-text').textContent = 'Sign Up';
+
+        // Update innerHTML and re-attach event listener
+        signupToggle.innerHTML = 'Already have an account? <a href="#" id="toggle-signup">Sign in</a>';
         document.getElementById('toggle-signup').addEventListener('click', toggleSignupMode);
+    } else {
+        switchToLoginMode();
     }
+
+    // Reset errors
+    resetFormErrors();
+}
+
 
     // Reset form validation errors
     function resetFormErrors() {
@@ -795,8 +803,11 @@
         }
     }
 
-    // Example usage: Add an event listener to a sign-out button
-    document.getElementById('sign-out-btn')?.addEventListener('click', signOut);
+    // Fix: Use optional chaining to check if the sign-out button exists before adding the event listener
+    const signOutBtn = document.getElementById('sign-out-btn');
+    if (signOutBtn) {
+        signOutBtn.addEventListener('click', signOut);
+    }
 
     // Input focus effects
     const inputs = document.querySelectorAll('input');
