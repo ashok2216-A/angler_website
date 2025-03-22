@@ -704,7 +704,7 @@ function toggleSignupMode(e) {
                     if (result.error) {
                         showToast(result.error.message || 'Sign up failed. Please try again.', 'error');
                     } else {
-                        showToast('Account created! Please check your email to confirm your account.', 'success');
+                        showToast('Your Account created!', 'success');
                         
                         // Switch back to login mode
                         setTimeout(() => {
